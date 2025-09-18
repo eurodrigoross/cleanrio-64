@@ -2,72 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Machado Clean - Design System Ultra Moderno Gamificado */
+/* Machado Clean - Design System Minimalista Premium */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 210 15% 25%;
+    --background: 0 0% 99%;
+    --foreground: 220 9% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 15% 25%;
+    --card-foreground: 220 9% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 15% 25%;
+    --popover-foreground: 220 9% 20%;
 
-    /* Cores baseadas na logo - Azul Royal */
-    --primary: 220 100% 50%;
+    /* Cor principal - Azul moderno e confiável */
+    --primary: 220 90% 56%;
     --primary-foreground: 0 0% 100%;
 
-    /* Azul Claro */
-    --secondary: 190 100% 60%;
-    --secondary-foreground: 0 0% 100%;
+    /* Cor secundária - Cinza sofisticado */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 9% 46%;
 
-    --muted: 210 20% 95%;
-    --muted-foreground: 210 15% 50%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    /* Verde suave para contraste */
-    --accent: 140 60% 55%;
+    /* Cor de destaque - Verde para CTAs */
+    --accent: 142 76% 36%;
     --accent-foreground: 0 0% 100%;
 
-    /* Roxo do degradê */
-    --purple: 270 70% 60%;
-    --purple-foreground: 0 0% 100%;
-
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 95%;
-    --ring: 220 100% 50%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 220 90% 56%;
 
-    --radius: 1.2rem;
+    --radius: 0.75rem;
 
-    /* Cores Custom Machado Clean */
-    --royal-blue: 220 100% 50%;
-    --light-blue: 190 100% 60%;
-    --clean-white: 0 0% 100%;
-    --soft-green: 140 60% 55%;
-    --gradient-purple: 270 70% 60%;
-    --neon-glow: 190 100% 60%;
+    /* Sistema de cores minimalista */
+    --primary-blue: 220 90% 56%;
+    --primary-light: 220 90% 96%;
+    --accent-green: 142 76% 36%;
+    --accent-orange: 25 95% 53%;
+    --neutral-50: 220 14% 96%;
+    --neutral-100: 220 13% 91%;
+    --neutral-500: 220 9% 46%;
+    --neutral-900: 220 9% 20%;
 
-    /* Glassmorphism + Gradientes Modernos */
-    --gradient-hero: linear-gradient(135deg, hsl(220, 100%, 50%) 0%, hsl(190, 100%, 60%) 50%, hsl(270, 70%, 60%) 100%);
-    --gradient-glass: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
-    --gradient-neon: linear-gradient(135deg, hsl(190, 100%, 60%), hsl(140, 60%, 55%));
-    --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
-    --gradient-modal: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.92));
+    /* Gradientes sutis */
+    --gradient-primary: linear-gradient(135deg, hsl(220, 90%, 56%) 0%, hsl(220, 90%, 66%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(142, 76%, 36%) 0%, hsl(142, 76%, 46%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(220, 90%, 96%) 0%, hsl(0, 0%, 100%) 100%);
 
-    /* Sombras Premium + Neon */
-    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    --shadow-neon: 0 0 20px hsl(190, 100%, 60%, 0.5);
-    --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
-    --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    /* Sombras minimalistas */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-    /* Animações Gamificadas */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    --transition-elastic: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Transições suaves */
+    --transition-all: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease-out;
 
     --sidebar-background: 0 0% 98%;
 
@@ -138,173 +133,130 @@
 }
 
 @layer components {
-  /* Hero Section Ultra Moderno */
+  /* Hero Section Minimalista */
   .hero-section {
-    @apply relative min-h-screen flex items-center justify-center overflow-hidden;
-    background: var(--gradient-hero);
+    @apply relative py-24 md:py-32 bg-gradient-to-br from-background to-primary/5;
   }
 
   .hero-content {
-    @apply relative z-10 text-center text-white px-4 max-w-5xl mx-auto;
+    @apply relative z-10 text-center px-4 max-w-6xl mx-auto;
   }
 
   .hero-title {
-    @apply text-6xl md:text-8xl font-black mb-6 leading-tight;
-    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(135deg, #ffffff, #e0f7ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    @apply text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight text-foreground;
+    letter-spacing: -0.02em;
   }
 
   .hero-subtitle {
-    @apply text-xl md:text-3xl mb-8 opacity-95 leading-relaxed font-medium;
+    @apply text-lg md:text-xl lg:text-2xl mb-12 text-muted-foreground leading-relaxed max-w-3xl mx-auto;
   }
 
-  /* Glassmorphism Cards 3D */
-  .glass-card {
-    @apply backdrop-blur-md border border-white/20 rounded-3xl p-8 transition-all duration-500 transform hover:scale-105 hover:rotate-1;
-    background: var(--gradient-glass);
-    box-shadow: var(--shadow-glass);
+  /* Cards minimalistas */
+  .card-minimal {
+    @apply bg-card rounded-xl p-6 transition-all duration-200 hover:shadow-lg border border-border;
   }
 
-  .glass-card:hover {
-    box-shadow: var(--shadow-glass), var(--shadow-neon);
+  .card-minimal:hover {
+    transform: translateY(-2px);
   }
 
-  /* CTA Neon Animado */
-  .cta-neon {
-    @apply px-10 py-5 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-110;
-    background: var(--gradient-neon);
+  /* CTA Principal */
+  .cta-primary {
+    @apply inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200;
+    background: var(--gradient-accent);
     color: white;
-    box-shadow: var(--shadow-neon);
-    position: relative;
-    overflow: hidden;
+    box-shadow: var(--shadow-md);
   }
 
-  .cta-neon:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
+  .cta-primary:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
   }
 
-  .cta-neon:hover:before {
-    left: 100%;
+  /* CTA Secundário */
+  .cta-secondary {
+    @apply inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 bg-primary text-primary-foreground;
+    box-shadow: var(--shadow-md);
   }
 
-  /* Botão WhatsApp Flutuante Premium */
-  .whatsapp-float {
-    @apply fixed bottom-6 right-6 z-50 p-5 rounded-full text-white shadow-lg transition-all duration-300 hover:scale-110;
+  .cta-secondary:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+  }
+
+  /* Botão WhatsApp fixo */
+  .whatsapp-fixed {
+    @apply fixed bottom-6 right-6 z-50 p-4 rounded-full text-white shadow-xl transition-all duration-200 hover:scale-105;
     background: linear-gradient(135deg, #25D366, #128C7E);
-    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
   }
 
-  .whatsapp-float:hover {
-    box-shadow: 0 12px 35px rgba(37, 211, 102, 0.6);
+  /* Section padrão */
+  .section-container {
+    @apply py-16 md:py-24 px-4;
   }
 
-  /* Cards 3D Interativos */
-  .card-3d {
-    @apply transition-all duration-500 transform-gpu;
-    background: var(--gradient-card);
-    box-shadow: var(--shadow-card);
-    transform-style: preserve-3d;
+  /* Títulos de seção */
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 text-foreground;
+    letter-spacing: -0.02em;
   }
 
-  .card-3d:hover {
-    transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
-    box-shadow: var(--shadow-modal);
+  .section-subtitle {
+    @apply text-lg md:text-xl text-center text-muted-foreground mb-16 max-w-3xl mx-auto;
   }
 
-  /* Modal Gamificado */
-  .modal-overlay {
-    @apply fixed inset-0 z-50 flex items-center justify-center p-4;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
+  /* Grid responsivo */
+  .grid-features {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto;
   }
 
-  .modal-content {
-    @apply rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto;
-    background: var(--gradient-modal);
-    box-shadow: var(--shadow-modal);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  /* Badge de destaque */
+  .badge-popular {
+    @apply absolute -top-3 left-1/2 transform -translate-x-1/2 bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-semibold;
   }
 
-  /* Animações Gamificadas */
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
-
-  .animate-pulse-neon {
-    animation: pulse-neon 2s ease-in-out infinite alternate;
-  }
-
-  .animate-slide-in-3d {
-    animation: slide-in-3d 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  }
-
-  /* Slider Antes/Depois */
-  .before-after-slider {
-    @apply relative overflow-hidden rounded-2xl;
-    user-select: none;
-  }
-
-  .slider-handle {
-    @apply absolute top-1/2 transform -translate-y-1/2 w-1 bg-white cursor-ew-resize z-10;
-    height: 100%;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-  }
-
-  /* Contador Regressivo */
-  .countdown-timer {
-    @apply flex space-x-4 justify-center items-center;
-  }
-
-  .countdown-item {
-    @apply bg-white/20 backdrop-blur-md rounded-xl p-4 min-w-20 text-center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-  }
-
-  /* Tabela de Preços Premium */
+  /* Tabela de preços */
   .pricing-card {
-    @apply relative rounded-3xl p-8 transition-all duration-500 transform hover:scale-105;
-    background: var(--gradient-card);
-    border: 2px solid transparent;
+    @apply relative bg-card rounded-xl p-8 border border-border transition-all duration-200 hover:shadow-lg;
   }
 
   .pricing-card.featured {
-    border-image: linear-gradient(135deg, hsl(190, 100%, 60%), hsl(140, 60%, 55%)) 1;
-    box-shadow: var(--shadow-neon);
+    @apply border-primary shadow-lg;
+    box-shadow: 0 0 0 1px hsl(var(--primary)), var(--shadow-lg);
   }
 
-  .pricing-card.featured:hover {
-    box-shadow: var(--shadow-neon), var(--shadow-modal);
+  /* Depoimentos */
+  .testimonial-card {
+    @apply bg-card rounded-xl p-6 border border-border;
+  }
+
+  /* Contadores */
+  .countdown-item {
+    @apply bg-card rounded-lg p-4 min-w-20 text-center border border-border;
+  }
+
+  /* Animações sutis */
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
   }
 }
 
 /* Keyframes para animações */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes pulse-neon {
-  0% { box-shadow: var(--shadow-neon); }
-  100% { box-shadow: 0 0 30px hsl(190, 100%, 60%, 0.8), 0 0 40px hsl(190, 100%, 60%, 0.6); }
-}
-
-@keyframes slide-in-3d {
-  0% {
-    opacity: 0;
-    transform: translateY(50px) rotateX(-10deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotateX(0deg);
-  }
+  50% { transform: translateY(-6px); }
 }

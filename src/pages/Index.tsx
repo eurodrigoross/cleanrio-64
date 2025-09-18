@@ -1,25 +1,25 @@
-import HeroSectionModern from "@/components/HeroSectionModern";
-import BenefitsSectionModern from "@/components/BenefitsSectionModern";
+import HeroSectionMinimal from "@/components/HeroSectionMinimal";
+import BenefitsSectionMinimal from "@/components/BenefitsSectionMinimal";
 import BudgetCalculatorGamefied from "@/components/BudgetCalculatorGamefied";
-import BeforeAfterSection from "@/components/BeforeAfterSlider";
-import SocialProofCarousel from "@/components/SocialProofCarousel";
-import GuaranteeCertificate from "@/components/GuaranteeCertificate";
-import PricingComparative from "@/components/PricingComparative";
-import UrgencyCountdown from "@/components/UrgencyCountdown";
-import WhatsAppButtonModern from "@/components/WhatsAppButtonModern";
+import BeforeAfterSectionMinimal from "@/components/BeforeAfterSectionMinimal";
+import SocialProofMinimal from "@/components/SocialProofMinimal";
+import GuaranteeSectionMinimal from "@/components/GuaranteeSectionMinimal";
+import PricingTableMinimal from "@/components/PricingTableMinimal";
+import UrgencySectionMinimal from "@/components/UrgencySectionMinimal";
+import WhatsAppButtonMinimal from "@/components/WhatsAppButtonMinimal";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <HeroSectionModern />
-      <BenefitsSectionModern />
+      <HeroSectionMinimal />
+      <BenefitsSectionMinimal />
       <BudgetCalculatorGamefied />
-      <BeforeAfterSection />
-      <SocialProofCarousel />
-      <GuaranteeCertificate />
-      <PricingComparative />
-      <UrgencyCountdown />
-      <WhatsAppButtonModern />
+      <BeforeAfterSectionMinimal />
+      <SocialProofMinimal />
+      <GuaranteeSectionMinimal />
+      <PricingTableMinimal />
+      <UrgencySectionMinimal />
+      <WhatsAppButtonMinimal />
     </div>
   );
 };
