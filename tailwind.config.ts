@@ -57,6 +57,13 @@ export default {
         orange: {
           500: "hsl(var(--accent-orange))",
         },
+        // Cores para Quiz/Calculadora
+        quiz: {
+          primary: "hsl(var(--quiz-primary))",
+          accent: "hsl(var(--quiz-accent))",
+          background: "hsl(var(--quiz-background))",
+          card: "hsl(var(--quiz-card))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

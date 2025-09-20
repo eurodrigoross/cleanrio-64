@@ -30,6 +30,12 @@
     --accent: 142 76% 36%;
     --accent-foreground: 0 0% 100%;
 
+    /* Cores para o Quiz/Calculadora */
+    --quiz-primary: 220 90% 56%;
+    --quiz-accent: 142 76% 36%;
+    --quiz-background: 0 0% 99%;
+    --quiz-card: 0 0% 100%;
+
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 

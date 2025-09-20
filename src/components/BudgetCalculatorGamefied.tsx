@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { 
   Calculator, 
   MessageCircle, 
@@ -366,623 +367,327 @@ const BudgetCalculatorGamefied = () => {
   return (
     <>
       {/* Seção de Abertura da Calculadora */}
-      <section className="py-24 bg-gradient-to-br from-machado-royal via-machado-neon to-machado-purple text-white relative overflow-hidden" data-section="budget-calculator">
-        {/* Elementos decorativos */}
-        <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full animate-float"></div>
-        <div className="absolute bottom-20 right-20 w-24 h-24 bg-machado-green/20 rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
-        
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <Sparkles className="w-20 h-20 mx-auto mb-8 animate-float text-yellow-300" />
+      <section className="section-container bg-background text-center" data-section="budget-calculator">
+        <div className="container mx-auto px-4 relative z-10">
+          <Sparkles className="w-16 h-16 mx-auto mb-8 text-primary animate-float" />
           
-          <h2 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
-            Simulador de <span className="text-yellow-300">Orçamento Inteligente</span>
+          <h2 className="section-title">
+            Simulador de <span className="text-accent">Orçamento Inteligente</span>
           </h2>
           
-          <p className="text-xl md:text-2xl mb-12 opacity-95 max-w-4xl mx-auto">
+          <p className="section-subtitle">
             Tecnologia exclusiva para calcular seu preço personalizado em 30 segundos
           </p>
           
           <div className="mb-12">
-            <Button 
-              onClick={openCalculator}
-              className="cta-neon text-3xl px-16 py-8 group relative overflow-hidden"
-            >
-              <Calculator className="mr-4 group-hover:rotate-12 transition-transform duration-300" size={36} />
-              <span className="relative z-10">🚀 Calcular Preço Exclusivo</span>
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+              <DialogTrigger asChild>
+                <Button 
+                  size="lg"
+                  className="cta-primary text-xl px-12 py-6 group relative overflow-hidden"
+                >
+                  <Calculator className="mr-4 group-hover:rotate-12 transition-transform duration-300" size={28} />
+                  <span className="relative z-10">🚀 Calcular Preço Exclusivo</span>
+                </Button>
+              </DialogTrigger>
               
-              {/* Efeito de brilho */}
-              <div className="absolute inset-0 w-1/4 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 group-hover:animate-pulse opacity-0 group-hover:opacity-100"></div>
-            </Button>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 border-0">
+                <div className="bg-quiz-background min-h-[600px]">
+                  {/* Header do Modal */}
+                  <div className="sticky top-0 bg-quiz-background/95 backdrop-blur-sm border-b border-border p-6 rounded-t-xl z-10">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        {currentStep > 0 && (
+                          <Button
+                            onClick={goBack}
+                            variant="outline"
+                            size="icon"
+                            className="rounded-full"
+                          >
+                            <ChevronLeft size={20} />
+                          </Button>
+                        )}
+                        <div>
+                          <h3 className="text-2xl font-bold text-foreground">{steps[currentStep]}</h3>
+                          <p className="text-muted-foreground text-sm">Passo {currentStep + 1} de {steps.length}</p>
+                        </div>
+                      </div>
+                      
+                      <Button
+                        onClick={() => setIsOpen(false)}
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-full"
+                      >
+                        <X size={24} />
+                      </Button>
+                    </div>
+                    
+                    {/* Barra de progresso */}
+                    <div className="mt-6">
+                      <Progress value={progress} className="h-3" />
+                      <p className="text-xs text-muted-foreground mt-2 text-center">{Math.round(progress)}% concluído</p>
+                    </div>
+                  </div>
+
+                  {/* Conteúdo das Etapas */}
+                  <div className="p-8">
+                    {/* Etapa 1: Seleção de Serviço */}
+                    {currentStep === 0 && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {services.map((service) => {
+                          const IconComponent = service.icon;
+                          return (
+                            <div
+                              key={service.id}
+                              onClick={() => handleServiceSelect(service)}
+                              className="card-minimal cursor-pointer group text-center hover:border-primary transition-all duration-300 transform hover:scale-105"
+                            >
+                              <div className="mb-6">
+                                <IconComponent size={60} className="mx-auto text-primary group-hover:text-accent transition-colors duration-300" />
+                              </div>
+                              
+                              <h5 className="text-xl font-bold mb-3 text-foreground">{service.name}</h5>
+                              <p className="text-muted-foreground mb-4 text-sm leading-relaxed">{service.description}</p>
+                              
+                              {/* Benefícios */}
+                              <div className="mb-4">
+                                {service.benefits.slice(0, 2).map((benefit, index) => (
+                                  <div key={index} className="flex items-center gap-2 mb-2 text-xs text-muted-foreground">
+                                    <CheckCircle className="w-3 h-3 text-accent" />
+                                    <span>{benefit}</span>
+                                  </div>
+                                ))}
+                              </div>
+                              
+                              <p className="text-sm text-primary mt-3 font-medium opacity-80">
+                                Clique para selecionar →
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* Etapa 2: Seleção de Tamanho */}
+                    {currentStep === 1 && selectedService && (
+                      <div>
+                        <div className="text-center mb-8">
+                          <div className="mb-6">
+                            <selectedService.icon size={60} className="mx-auto text-primary mb-4" />
+                            <h4 className="text-2xl font-bold text-foreground mb-2">{selectedService.name}</h4>
+                            <p className="text-muted-foreground">{selectedService.description}</p>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {getSizeOptions().map((size) => (
+                            <div
+                              key={size.id}
+                              onClick={() => handleSizeSelect(size)}
+                              className={`card-minimal cursor-pointer group text-center transition-all duration-300 hover:border-primary transform hover:scale-105 relative ${
+                                size.popular ? 'border-primary shadow-lg' : ''
+                              }`}
+                            >
+                              {size.popular && (
+                                <div className="badge-popular">
+                                  Mais Popular
+                                </div>
+                              )}
+                              
+                              <h5 className="text-lg font-bold mb-3 text-foreground">{size.name}</h5>
+                              
+                              {size.cleanPrice && (
+                                <div className="mb-4">
+                                  <div className="text-2xl font-black text-accent">
+                                    R$ {size.cleanPrice}
+                                  </div>
+                                  {size.impermeabilizationPrice && (
+                                    <div className="text-sm text-muted-foreground mt-1">
+                                      + Impermeab. R$ {size.impermeabilizationPrice}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                              
+                              <p className="text-sm text-primary font-medium">
+                                Selecionar →
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Etapa 3: Impermeabilização */}
+                    {currentStep === 2 && selectedService && selectedSize && (
+                      <div className="text-center max-w-2xl mx-auto">
+                        {selectedSize.id === "cadeiras" ? (
+                          // Seleção de quantidade para cadeiras
+                          <div>
+                            <h4 className="text-2xl font-bold text-foreground mb-6">Quantas cadeiras você tem?</h4>
+                            <p className="text-muted-foreground mb-8">Mínimo de 4 cadeiras para o serviço</p>
+                            
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                              {[4, 6, 8, 10, 12, 16, 20, 24].map((qty) => (
+                                <Button
+                                  key={qty}
+                                  onClick={() => {
+                                    setChairQuantity(qty);
+                                    setCurrentStep(3);
+                                  }}
+                                  variant={chairQuantity === qty ? "default" : "outline"}
+                                  className="h-16 text-lg"
+                                >
+                                  {qty} cadeiras
+                                </Button>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          // Seleção de impermeabilização
+                          selectedService.category === "sofa-clean" || selectedService.category === "others" ? (
+                            <div>
+                              <h4 className="text-2xl font-bold text-foreground mb-6">Deseja adicionar impermeabilização?</h4>
+                              <p className="text-muted-foreground mb-8">Proteção extra contra líquidos e manchas por 6 meses</p>
+                              
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <Button
+                                  onClick={() => handleImpermeabilizationChoice(false)}
+                                  variant="outline"
+                                  className="h-24 text-lg flex flex-col gap-2"
+                                >
+                                  <X size={32} />
+                                  Só Higienização
+                                  <span className="text-sm opacity-70">R$ {selectedSize.cleanPrice}</span>
+                                </Button>
+                                
+                                <Button
+                                  onClick={() => handleImpermeabilizationChoice(true)}
+                                  className="h-24 text-lg flex flex-col gap-2"
+                                >
+                                  <ShieldCheck size={32} />
+                                  Com Impermeabilização
+                                  <span className="text-sm opacity-70">
+                                    R$ {(selectedSize.cleanPrice || 0) + (selectedSize.impermeabilizationPrice || 0)}
+                                  </span>
+                                </Button>
+                              </div>
+                            </div>
+                          ) : null
+                        )}
+                      </div>
+                    )}
+
+                    {/* Etapa 4: Resultado */}
+                    {currentStep === 3 && selectedService && selectedSize && (
+                      <div className="text-center max-w-3xl mx-auto">
+                        <div className="mb-8">
+                          <Star className="w-20 h-20 mx-auto text-accent mb-4 animate-pulse" />
+                          <h4 className="text-3xl font-bold text-foreground mb-4">Seu Orçamento Exclusivo</h4>
+                        </div>
+
+                        {/* Resumo do Pedido */}
+                        <div className="card-minimal mb-8 p-6">
+                          <h5 className="text-xl font-bold text-foreground mb-4">Resumo do Pedido</h5>
+                          <div className="text-left space-y-2">
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Serviço:</span>
+                              <span className="font-medium text-foreground">{selectedService.name}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Item:</span>
+                              <span className="font-medium text-foreground">{selectedSize.name}</span>
+                            </div>
+                            {selectedSize.id === "cadeiras" && (
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Quantidade:</span>
+                                <span className="font-medium text-foreground">{chairQuantity} unidades</span>
+                              </div>
+                            )}
+                            {wantsImpermeabilization && (
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Impermeabilização:</span>
+                                <span className="font-medium text-accent">✓ Incluída</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Preços */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                          <div className="card-minimal p-6 border-2 border-accent">
+                            <div className="text-lg font-bold text-accent mb-2">💰 À Vista (Pix/Dinheiro)</div>
+                            <div className="text-3xl font-black text-foreground">R$ {calculatePrices().cashPrice}</div>
+                            <div className="text-sm text-muted-foreground mt-2">Melhor preço garantido</div>
+                          </div>
+                          
+                          <div className="card-minimal p-6">
+                            <div className="text-lg font-bold text-primary mb-2">💳 Parcelado</div>
+                            <div className="text-2xl font-bold text-foreground">
+                              12x de R$ {Math.round(calculatePrices().installmentPrice / 12)}
+                            </div>
+                            <div className="text-sm text-muted-foreground mt-2">Total: R$ {calculatePrices().installmentPrice}</div>
+                          </div>
+                        </div>
+
+                        {/* Benefícios inclusos */}
+                        <div className="card-minimal p-6 mb-8">
+                          <h5 className="text-lg font-bold text-foreground mb-4">🏆 Incluído no Serviço</h5>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-accent" />
+                              <span>Certificado de garantia 6 meses</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-accent" />
+                              <span>Neutralização de odores</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-accent" />
+                              <span>Proteção contra ácaros</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-accent" />
+                              <span>Atendimento premium no RJ</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* CTA Final */}
+                        <Button
+                          onClick={handleWhatsApp}
+                          size="lg"
+                          className="cta-primary text-xl px-12 py-6 group w-full md:w-auto"
+                        >
+                          <MessageCircle className="mr-4 group-hover:scale-110 transition-transform duration-300" size={28} />
+                          👉 Quero Meu Orçamento Agora
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
 
           {/* Mini estatísticas */}
-          <div className="flex justify-center items-center gap-8 text-sm opacity-90">
+          <div className="flex justify-center items-center gap-8 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-              <Award className="w-5 h-5 text-yellow-300 animate-pulse" />
+              <Award className="w-5 h-5 text-accent animate-pulse" />
               <span>+2.500 orçamentos calculados</span>
             </div>
             <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-machado-green animate-pulse" />
+              <Zap className="w-5 h-5 text-primary animate-pulse" />
               <span>Resultado em 30 segundos</span>
             </div>
             <div className="flex items-center gap-2">
-              <Star className="w-5 h-5 text-white animate-pulse" />
+              <Star className="w-5 h-5 text-accent animate-pulse" />
               <span>Preços exclusivos</span>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Modal Gamificado Ultra Moderno */}
-      {isOpen && (
-        <div className="modal-overlay animate-fade-in">
-          <div className="modal-content p-0 max-w-6xl animate-scale-in">
-            {/* Header com progresso gamificado */}
-            <div className="bg-gradient-to-r from-machado-royal via-machado-neon to-machado-purple p-8 text-white">
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h3 className="text-4xl font-black flex items-center gap-3">
-                    <Crown className="w-10 h-10 text-yellow-300" />
-                    Quiz Premium Machado Clean
-                  </h3>
-                  <p className="text-machado-light mt-2 text-xl">{steps[currentStep]}</p>
-                </div>
-                <button 
-                  onClick={() => setIsOpen(false)}
-                  className="text-white/80 hover:text-white transition-colors p-3 hover:bg-white/10 rounded-full group"
-                >
-                  <X size={32} className="group-hover:rotate-90 transition-transform duration-300" />
-                </button>
-              </div>
-
-              {/* Barra de progresso gamificada */}
-              <div className="relative">
-                <Progress value={progress} className="h-6 bg-white/20 rounded-full" />
-                <div className="flex justify-between mt-4">
-                  <span className="text-lg font-bold flex items-center gap-2">
-                    <Clock className="w-5 h-5" />
-                    Etapa {currentStep + 1} de {steps.length}
-                  </span>
-                  <span className="text-lg font-bold text-yellow-300">{Math.round(progress)}% completo</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-10">
-              {/* Etapa 1: Seleção de Serviço */}
-              {currentStep === 0 && (
-                <div className="animate-slide-in-3d">
-                  <div className="text-center mb-12">
-                    <h4 className="text-4xl font-black text-machado-royal mb-6">
-                      Qual serviço você deseja?
-                    </h4>
-                    <p className="text-xl text-gray-600">Selecione o serviço ideal para suas necessidades</p>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {services.map((service) => {
-                      const IconComponent = service.icon;
-                      return (
-                        <div
-                          key={service.id}
-                          onClick={() => handleServiceSelect(service)}
-                          className="glass-card cursor-pointer group text-center hover:border-machado-neon transition-all duration-500 transform hover:scale-105"
-                        >
-                          <div className="mb-8">
-                            <IconComponent size={80} className="mx-auto text-machado-royal group-hover:text-machado-neon transition-colors duration-300" />
-                          </div>
-                          
-                          <h5 className="text-2xl font-bold mb-4 text-machado-royal">{service.name}</h5>
-                          <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
-                          
-                          {/* Benefícios */}
-                          <div className="mb-6">
-                            {service.benefits.slice(0, 2).map((benefit, index) => (
-                              <div key={index} className="flex items-center gap-2 mb-2 text-sm text-gray-600">
-                                <CheckCircle className="w-4 h-4 text-machado-green" />
-                                <span>{benefit}</span>
-                              </div>
-                            ))}
-                          </div>
-                          
-                          <div className="border-t pt-4">
-                            <div className="text-sm text-gray-500 line-through mb-1">
-                              Mercado: R$ {service.id === "sofa-clean" ? Math.round(sofaSizes[0].cleanPrice! * 1.25) : 
-                                           service.id === "sofa-impermeabilization" ? Math.round(sofaSizes[0].impermeabilizationPrice! * 1.25) :
-                                           service.id === "sofa-combo" ? Math.round((sofaSizes[0].cleanPrice! + sofaSizes[0].impermeabilizationPrice!) * 1.25) :
-                                           service.id === "car-clean" ? Math.round(carSizes[0].cleanPrice! * 1.25) :
-                                           service.id === "mattress-clean" ? Math.round(mattressSizes[0].cleanPrice! * 1.25) : 0}
-                            </div>
-                            <div className="text-3xl font-black text-machado-neon">
-                              A partir de R$ {service.id === "sofa-clean" ? sofaSizes[0].cleanPrice :
-                                             service.id === "sofa-impermeabilization" ? sofaSizes[0].impermeabilizationPrice :
-                                             service.id === "sofa-combo" ? (sofaSizes[0].cleanPrice! + sofaSizes[0].impermeabilizationPrice!) :
-                                             service.id === "car-clean" ? carSizes[0].cleanPrice :
-                                             service.id === "mattress-clean" ? mattressSizes[0].cleanPrice : 0}
-                            </div>
-                          </div>
-                          
-                          <p className="text-sm text-machado-royal mt-3 font-semibold opacity-80">
-                            Clique para selecionar →
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Etapa 2: Seleção de Tamanho */}
-              {currentStep === 1 && selectedService && (
-                <div className="animate-slide-in-3d">
-                  <div className="text-center mb-12">
-                    <div className="mb-8">
-                      {(() => {
-                        const IconComponent = selectedService.icon;
-                        return <IconComponent size={100} className="mx-auto text-machado-royal" />;
-                      })()}
-                    </div>
-                    <h4 className="text-4xl font-black text-machado-royal mb-6">
-                      Detalhe do seu {selectedService.name.toLowerCase()}
-                    </h4>
-                    <p className="text-xl text-gray-600">Selecione o tamanho para calcular o valor exato</p>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                    {getSizeOptions().map((size) => (
-                      <div
-                        key={size.id}
-                        onClick={() => handleSizeSelect(size)}
-                        className={`glass-card cursor-pointer group text-center transition-all duration-500 transform hover:scale-105 relative ${
-                          size.popular ? 'border-2 border-machado-neon bg-machado-neon/5' : 'border-2 border-transparent hover:border-machado-neon'
-                        }`}
-                      >
-                        {size.popular && (
-                          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-machado-neon to-machado-green text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
-                            ⭐ Mais Popular
-                          </div>
-                        )}
-                        
-                        <h5 className="text-2xl font-bold mb-4 text-machado-royal">{size.name}</h5>
-                        <div className="mb-4">
-                          <div className="text-sm text-gray-500 line-through">
-                            R$ {Math.round((size.cleanPrice || size.impermeabilizationPrice || 0) * 1.25)}
-                          </div>
-                          <div className="text-3xl font-black text-machado-neon">
-                            R$ {size.cleanPrice || size.impermeabilizationPrice || 0}
-                          </div>
-                        </div>
-                        <p className="text-sm text-machado-royal font-semibold opacity-80">Clique para selecionar →</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex justify-center">
-                    <Button 
-                      onClick={goBack}
-                      variant="outline"
-                      className="px-8 py-4 text-lg hover:bg-machado-royal hover:text-white transition-all duration-300"
-                    >
-                      <ChevronLeft className="mr-2" size={24} />
-                      Voltar
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {/* Etapa 2: Seleção de Quantidade de Cadeiras ou Impermeabilização */}
-              {currentStep === 2 && selectedService && selectedSize && (
-                <div className="animate-slide-in-3d">
-                  {selectedSize.id === "cadeiras" ? (
-                    /* Seção para selecionar quantidade de cadeiras */
-                    <div>
-                      <div className="text-center mb-12">
-                        <Armchair size={100} className="mx-auto text-machado-royal mb-8" />
-                        <h4 className="text-4xl font-black text-machado-royal mb-6">
-                          Quantas cadeiras?
-                        </h4>
-                        <p className="text-xl text-gray-600 mb-8">
-                          Mínimo 4 cadeiras • Preço unitário: R$ {selectedSize.cleanPrice}
-                        </p>
-
-                        <div className="max-w-md mx-auto mb-12">
-                          <div className="flex items-center justify-center gap-6">
-                            <button
-                              onClick={() => setChairQuantity(Math.max(4, chairQuantity - 1))}
-                              className="w-12 h-12 rounded-full bg-machado-royal text-white text-2xl font-bold hover:bg-machado-neon transition-colors duration-300"
-                            >
-                              -
-                            </button>
-                            <div className="text-center">
-                              <div className="text-4xl font-black text-machado-royal mb-2">{chairQuantity}</div>
-                              <div className="text-sm text-gray-600">cadeiras</div>
-                            </div>
-                            <button
-                              onClick={() => setChairQuantity(chairQuantity + 1)}
-                              className="w-12 h-12 rounded-full bg-machado-royal text-white text-2xl font-bold hover:bg-machado-neon transition-colors duration-300"
-                            >
-                              +
-                            </button>
-                          </div>
-
-                          <div className="mt-8 p-6 glass-card">
-                            <div className="text-center">
-                              <div className="text-2xl font-bold text-machado-royal mb-2">
-                                Total Higienização: R$ {(selectedSize.cleanPrice || 0) * chairQuantity}
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                {chairQuantity} cadeiras × R$ {selectedSize.cleanPrice}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Pergunta sobre impermeabilização das cadeiras */}
-                        <div className="grid md:grid-cols-2 gap-10 mb-12 max-w-4xl mx-auto">
-                          <div
-                            onClick={() => {
-                              setWantsImpermeabilization(true);
-                              setCurrentStep(3);
-                            }}
-                            className="glass-card cursor-pointer group text-center hover:border-machado-green transition-all duration-500 transform hover:scale-105"
-                          >
-                            <div className="mb-8">
-                              <CheckCircle size={80} className="mx-auto text-machado-green group-hover:scale-110 transition-transform duration-300" />
-                            </div>
-                            <h5 className="text-2xl font-bold mb-4 text-machado-royal">Impermeabilizar Todas!</h5>
-                            <div className="text-3xl font-black text-machado-green mb-4">
-                              + R$ {(selectedSize.impermeabilizationPrice || 0) * chairQuantity}
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              {chairQuantity} cadeiras × R$ {selectedSize.impermeabilizationPrice}
-                            </div>
-                          </div>
-
-                          <div
-                            onClick={() => {
-                              setWantsImpermeabilization(false);
-                              setCurrentStep(3);
-                            }}
-                            className="glass-card cursor-pointer group text-center hover:border-gray-400 transition-all duration-500 transform hover:scale-105"
-                          >
-                            <div className="mb-8">
-                              <Banknote size={80} className="mx-auto text-gray-600 group-hover:scale-110 transition-transform duration-300" />
-                            </div>
-                            <h5 className="text-2xl font-bold mb-4 text-machado-royal">Só Higienização</h5>
-                            <div className="text-3xl font-black text-gray-600 mb-4">R$ 0</div>
-                            <div className="text-sm text-gray-600">Sem impermeabilização</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    /* Seção normal para impermeabilização */
-                    <div>
-                      <div className="text-center mb-12">
-                        <ShieldCheck size={100} className="mx-auto text-machado-green mb-8" />
-                        <h4 className="text-4xl font-black text-machado-royal mb-6">
-                          Proteção extra contra manchas?
-                        </h4>
-                        <p className="text-xl text-gray-600">
-                          Impermeabilização Premium • Proteção por 6 meses • Certificado de garantia
-                        </p>
-                      </div>
-
-                      <div className="grid md:grid-cols-2 gap-10 mb-12 max-w-4xl mx-auto">
-                        <div
-                          onClick={() => handleImpermeabilizationChoice(true)}
-                          className="glass-card cursor-pointer group text-center hover:border-machado-green transition-all duration-500 transform hover:scale-105"
-                        >
-                          <div className="mb-8">
-                            <CheckCircle size={80} className="mx-auto text-machado-green group-hover:scale-110 transition-transform duration-300" />
-                          </div>
-                          <h5 className="text-2xl font-bold mb-4 text-machado-royal">SIM, Quero Proteção!</h5>
-                          <div className="text-3xl font-black text-machado-green mb-4">
-                            + R$ {selectedSize?.impermeabilizationPrice || 150}
-                          </div>
-                          <div className="text-left space-y-2 mb-6">
-                            <div className="flex items-center gap-2 text-gray-600">
-                              <CheckCircle className="w-5 h-5 text-machado-green" />
-                              <span>Proteção contra líquidos</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-gray-600">
-                              <CheckCircle className="w-5 h-5 text-machado-green" />
-                              <span>Facilita limpeza diária</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-gray-600">
-                              <CheckCircle className="w-5 h-5 text-machado-green" />
-                              <span>Garantia estendida</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div
-                          onClick={() => handleImpermeabilizationChoice(false)}
-                          className="glass-card cursor-pointer group text-center hover:border-gray-400 transition-all duration-500 transform hover:scale-105"
-                        >
-                          <div className="mb-8">
-                            <Banknote size={80} className="mx-auto text-gray-600 group-hover:scale-110 transition-transform duration-300" />
-                          </div>
-                          <h5 className="text-2xl font-bold mb-4 text-machado-royal">Só Higienização</h5>
-                          <div className="text-3xl font-black text-gray-600 mb-4">R$ 0</div>
-                          <div className="text-left space-y-2 mb-6">
-                            <div className="flex items-center gap-2 text-gray-600">
-                              <CheckCircle className="w-5 h-5 text-machado-green" />
-                              <span>Higienização completa</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-gray-600">
-                              <CheckCircle className="w-5 h-5 text-machado-green" />
-                              <span>Resultado profissional</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-gray-600">
-                              <CheckCircle className="w-5 h-5 text-machado-green" />
-                              <span>Garantia padrão</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex justify-center">
-                    <Button 
-                      onClick={goBack}
-                      variant="outline"
-                      className="px-8 py-4 text-lg hover:bg-machado-royal hover:text-white transition-all duration-300"
-                    >
-                      <ChevronLeft className="mr-2" size={24} />
-                      Voltar
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {/* Etapa Final: Resultado com Ancoragem de Preços */}
-              {currentStep === 3 && selectedService && (
-                <div className="animate-slide-in-3d text-center">
-                  {selectedService.category === "others" && selectedSize?.id !== "cadeiras" ? (
-                    /* Resultado para Outros Serviços */
-                    <div className="max-w-2xl mx-auto">
-                      <div className="mb-8">
-                        <Armchair size={100} className="mx-auto text-machado-royal mb-6" />
-                        <h4 className="text-4xl font-black mb-6 text-machado-royal">
-                          Orçamento Personalizado
-                        </h4>
-                        <p className="text-xl text-gray-600">
-                          Nossos especialistas farão uma visita gratuita para avaliar suas necessidades específicas
-                        </p>
-                      </div>
-                      
-                      <div className="glass-card mb-8">
-                        <div className="text-center space-y-6">
-                          <Star size={60} className="mx-auto text-yellow-500" />
-                          
-                          <h5 className="text-2xl font-bold text-machado-royal mb-4">
-                            Visita Técnica Gratuita
-                          </h5>
-                          
-                          <div className="grid grid-cols-2 gap-4 text-left">
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="w-5 h-5 text-machado-green" />
-                              <span>Análise detalhada</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="w-5 h-5 text-machado-green" />
-                              <span>Orçamento na hora</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="w-5 h-5 text-machado-green" />
-                              <span>Sem compromisso</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="w-5 h-5 text-machado-green" />
-                              <span>Preço justo</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mb-6">
-                        <Button 
-                          onClick={handleWhatsApp}
-                          className="cta-neon text-2xl px-16 py-8 group relative overflow-hidden"
-                        >
-                          <MessageCircle className="mr-4 group-hover:rotate-12 transition-transform duration-300" size={32} />
-                          <span className="relative z-10">Agendar Visita Gratuita</span>
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    /* Resultado com Ancoragem de Preços */
-                    <div className="max-w-4xl mx-auto">
-                      <div className="mb-12">
-                        <Crown size={100} className="mx-auto text-yellow-500 mb-8 animate-pulse-neon" />
-                        <h4 className="text-5xl font-black mb-6 text-machado-royal">
-                          💎 Seu Orçamento Exclusivo
-                        </h4>
-                        <h5 className="text-3xl font-bold text-machado-neon mb-4">
-                          MACHADO CLEAN
-                        </h5>
-                        <p className="text-xl text-gray-600">
-                          Preços especiais com ancoragem de mercado • Pagamento facilitado
-                        </p>
-                      </div>
-                      
-                      <div className="grid md:grid-cols-2 gap-8 mb-12">
-                        {/* Card Preço À Vista */}
-                        <div className="glass-card border-2 border-machado-green relative overflow-hidden">
-                          <div className="absolute top-4 right-4">
-                            <div className="bg-machado-green text-white px-3 py-1 rounded-full text-sm font-bold">
-                              RECOMENDADO
-                            </div>
-                          </div>
-                          
-                          <div className="text-center mb-6">
-                            <Banknote size={60} className="mx-auto text-machado-green mb-4" />
-                            <h6 className="text-2xl font-bold text-machado-royal mb-2">
-                              À Vista (Pix/Dinheiro)
-                            </h6>
-                            
-                            <div className="mb-4">
-                              <div className="text-lg text-gray-500 line-through mb-1">
-                                Valor de mercado: R$ {calculatePrices().marketPrice}
-                              </div>
-                              <div className="text-5xl font-black text-machado-green">
-                                R$ {calculatePrices().cashPrice}
-                              </div>
-                              <div className="text-sm text-machado-green font-bold mt-1">
-                                💰 Economia de R$ {calculatePrices().marketPrice - calculatePrices().cashPrice}
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-2 text-left text-sm text-gray-600">
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="w-4 h-4 text-machado-green" />
-                              <span>Melhor preço garantido</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="w-4 h-4 text-machado-green" />
-                              <span>Sem taxas adicionais</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="w-4 h-4 text-machado-green" />
-                              <span>Desconto especial</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Card Preço Parcelado */}
-                        <div className="glass-card border-2 border-machado-neon">
-                          <div className="text-center mb-6">
-                            <CreditCard size={60} className="mx-auto text-machado-neon mb-4" />
-                            <h6 className="text-2xl font-bold text-machado-royal mb-2">
-                              Parcelado no Cartão
-                            </h6>
-                            
-                            <div className="mb-4">
-                              <div className="text-3xl font-bold text-machado-neon mb-1">
-                                12x de R$ {Math.round(calculatePrices().installmentPrice / 12)}
-                              </div>
-                              <div className="text-lg text-gray-600">
-                                Total: R$ {calculatePrices().installmentPrice}
-                              </div>
-                              <div className="text-sm text-orange-600 font-semibold mt-1">
-                                (Acréscimo de 10% sobre valor à vista)
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-2 text-left text-sm text-gray-600">
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="w-4 h-4 text-machado-green" />
-                              <span>Facilita seu orçamento</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="w-4 h-4 text-machado-green" />
-                              <span>Sem consulta SPC/Serasa</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="w-4 h-4 text-machado-green" />
-                              <span>Aprovação na hora</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Resumo do Serviço */}
-                      <div className="glass-card mb-8 text-left">
-                        <h6 className="text-xl font-bold text-machado-royal mb-4 text-center">
-                          🎯 RESUMO DO SEU PEDIDO
-                        </h6>
-                        
-                        <div className="space-y-3">
-                          <div className="flex justify-between items-center py-3 border-b border-gray-200">
-                            <span className="text-lg font-medium">
-                              {selectedService.name} {selectedSize?.name}
-                              {selectedSize?.id === "cadeiras" && ` (${chairQuantity} unidades)`}
-                            </span>
-                            <span className="text-lg font-bold text-machado-neon">
-                              R$ {selectedSize?.id === "cadeiras" ? 
-                                   (selectedSize.cleanPrice || 0) * chairQuantity : 
-                                   selectedSize?.cleanPrice || selectedSize?.impermeabilizationPrice || 0}
-                            </span>
-                          </div>
-                          
-                          {wantsImpermeabilization && selectedSize && (
-                            <div className="flex justify-between items-center py-3 border-b border-gray-200">
-                              <span className="text-lg font-medium">
-                                Impermeabilização Premium
-                                {selectedSize.id === "cadeiras" && ` (${chairQuantity} unidades)`}
-                              </span>
-                              <span className="text-lg font-bold text-machado-green">
-                                + R$ {selectedSize.id === "cadeiras" ? 
-                                      (selectedSize.impermeabilizationPrice || 0) * chairQuantity : 
-                                      selectedSize.impermeabilizationPrice || 0}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Garantias e Benefícios */}
-                      <div className="glass-card mb-8">
-                        <h6 className="text-xl font-bold text-machado-royal mb-6 text-center">
-                          🏆 INCLUI EM TODOS OS SERVIÇOS
-                        </h6>
-                        
-                        <div className="grid md:grid-cols-2 gap-4 text-left">
-                          <div className="flex items-center gap-3">
-                            <Award className="w-6 h-6 text-machado-green" />
-                            <span>Certificado de garantia 6 meses</span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <Zap className="w-6 h-6 text-machado-neon" />
-                            <span>Neutralização de odores</span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <ShieldCheck className="w-6 h-6 text-machado-green" />
-                            <span>Proteção contra ácaros e fungos</span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <Star className="w-6 h-6 text-yellow-500" />
-                            <span>Atendimento premium no RJ</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mb-8">
-                        <Button 
-                          onClick={handleWhatsApp}
-                          className="cta-neon text-3xl px-20 py-10 group relative overflow-hidden animate-pulse-glow"
-                        >
-                          <MessageCircle className="mr-4 group-hover:rotate-12 transition-transform duration-300" size={40} />
-                          <span className="relative z-10">Fechar este serviço no WhatsApp</span>
-                          
-                          {/* Efeito de brilho */}
-                          <div className="absolute inset-0 w-1/4 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 group-hover:animate-pulse opacity-0 group-hover:opacity-100"></div>
-                        </Button>
-                      </div>
-
-                      <div className="text-center pt-8 border-t border-gray-200">
-                        <p className="text-gray-600 mb-4">Quer alterar alguma coisa?</p>
-                        <Button 
-                          onClick={() => setCurrentStep(0)}
-                          variant="outline"
-                          className="px-8 py-4 text-lg hover:bg-machado-royal hover:text-white transition-all duration-300"
-                        >
-                          <ChevronLeft className="mr-2" size={24} />
-                          Modificar Escolhas
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };
