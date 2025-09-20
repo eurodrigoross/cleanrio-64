@@ -11,6 +11,13 @@ const HeroSectionMinimal = () => {
     window.open(whatsappUrl, '_blank');
   };
 
+  const handleScrollToCalculator = () => {
+    const calculatorSection = document.querySelector('[data-section="budget-calculator"]');
+    if (calculatorSection) {
+      calculatorSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="hero-section">
       <div className="container mx-auto px-4">
@@ -44,7 +51,7 @@ const HeroSectionMinimal = () => {
                   size="lg"
                 >
                   <Phone size={20} className="mr-2" />
-                  Descubra seu Orçamento Exclusivo
+                  👉 Quero Meu Orçamento Agora
                   <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 
@@ -52,8 +59,9 @@ const HeroSectionMinimal = () => {
                   variant="outline" 
                   size="lg"
                   className="cta-secondary"
+                  onClick={handleScrollToCalculator}
                 >
-                  Ver Resultados
+                  🚀 Calcular Preço Exclusivo
                 </Button>
               </div>
 

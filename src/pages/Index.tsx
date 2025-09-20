@@ -14,8 +14,8 @@ const Index = () => {
       <HeroSectionMinimal />
       <BenefitsSectionMinimal />
       <BudgetCalculatorGamefied />
-      <BeforeAfterSectionMinimal />
       <SocialProofMinimal />
+      <BeforeAfterSectionMinimal />
       <GuaranteeSectionMinimal />
       <PricingTableMinimal />
       <UrgencySectionMinimal />

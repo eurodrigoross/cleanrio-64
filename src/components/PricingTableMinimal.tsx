@@ -22,7 +22,7 @@ const PricingTableMinimal = () => {
         "Secagem rápida",
         "Garantia de 3 meses"
       ],
-      cta: "Escolher Essencial",
+      cta: "👉 Quero Meu Orçamento Agora",
       popular: false,
       variant: "outline" as const
     },
@@ -38,7 +38,7 @@ const PricingTableMinimal = () => {
         "Garantia de 6 meses",
         "Desconto no retorno"
       ],
-      cta: "Escolher Completo",
+      cta: "🚀 Calcular Preço Exclusivo",
       popular: true,
       variant: "default" as const
     },
@@ -54,7 +54,7 @@ const PricingTableMinimal = () => {
         "Garantia de 12 meses",
         "Manutenção gratuita"
       ],
-      cta: "Escolher Premium",
+      cta: "👉 Quero Meu Orçamento Agora",
       popular: false,
       variant: "outline" as const
     }

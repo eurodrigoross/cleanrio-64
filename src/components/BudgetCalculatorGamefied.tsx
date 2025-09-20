@@ -366,7 +366,7 @@ const BudgetCalculatorGamefied = () => {
   return (
     <>
       {/* Seção de Abertura da Calculadora */}
-      <section className="py-24 bg-gradient-to-br from-machado-royal via-machado-neon to-machado-purple text-white relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-machado-royal via-machado-neon to-machado-purple text-white relative overflow-hidden" data-section="budget-calculator">
         {/* Elementos decorativos */}
         <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full animate-float"></div>
         <div className="absolute bottom-20 right-20 w-24 h-24 bg-machado-green/20 rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
@@ -375,11 +375,11 @@ const BudgetCalculatorGamefied = () => {
           <Sparkles className="w-20 h-20 mx-auto mb-8 animate-float text-yellow-300" />
           
           <h2 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
-            Descubra seu Orçamento <span className="text-yellow-300">Exclusivo!</span>
+            Simulador de <span className="text-yellow-300">Orçamento Inteligente</span>
           </h2>
           
           <p className="text-xl md:text-2xl mb-12 opacity-95 max-w-4xl mx-auto">
-            Quiz interativo ultra moderno • Ancoragem de preços • Gatilhos mentais
+            Tecnologia exclusiva para calcular seu preço personalizado em 30 segundos
           </p>
           
           <div className="mb-12">
@@ -388,7 +388,7 @@ const BudgetCalculatorGamefied = () => {
               className="cta-neon text-3xl px-16 py-8 group relative overflow-hidden"
             >
               <Calculator className="mr-4 group-hover:rotate-12 transition-transform duration-300" size={36} />
-              <span className="relative z-10">Iniciar Quiz Premium</span>
+              <span className="relative z-10">🚀 Calcular Preço Exclusivo</span>
               
               {/* Efeito de brilho */}
               <div className="absolute inset-0 w-1/4 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 group-hover:animate-pulse opacity-0 group-hover:opacity-100"></div>
@@ -399,7 +399,7 @@ const BudgetCalculatorGamefied = () => {
           <div className="flex justify-center items-center gap-8 text-sm opacity-90">
             <div className="flex items-center gap-2">
               <Award className="w-5 h-5 text-yellow-300 animate-pulse" />
-              <span>+2.500 orçamentos realizados</span>
+              <span>+2.500 orçamentos calculados</span>
             </div>
             <div className="flex items-center gap-2">
               <Zap className="w-5 h-5 text-machado-green animate-pulse" />

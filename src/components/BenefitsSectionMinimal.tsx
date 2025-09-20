@@ -18,16 +18,6 @@ const BenefitsSectionMinimal = () => {
       description: "6 meses de garantia total ou seu dinheiro de volta, sem perguntas"
     },
     {
-      icon: Heart,
-      title: "Família Protegida",
-      description: "Produtos seguros e atóxicos, ideais para crianças e pets"
-    },
-    {
-      icon: Zap,
-      title: "Resultados Imediatos",
-      description: "Transformação visível já na primeira aplicação, com resultados duradouros"
-    },
-    {
       icon: Award,
       title: "Especialistas Certificados",
       description: "Equipe treinada e certificada com mais de 6 anos de experiência"
@@ -46,7 +36,7 @@ const BenefitsSectionMinimal = () => {
           </p>
         </div>
 
-        <div className="grid-features">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {benefits.map((benefit, index) => (
             <div 
               key={index}

@@ -104,7 +104,7 @@ const UrgencySectionMinimal = () => {
               size="lg"
             >
               <Phone size={24} className="mr-3" />
-              🔥 AGENDAR AGORA COM 30% OFF
+              🚀 GARANTIR DESCONTO AGORA
               <Zap size={24} className="ml-3" />
             </Button>
             

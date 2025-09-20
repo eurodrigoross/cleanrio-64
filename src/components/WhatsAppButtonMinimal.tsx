@@ -95,9 +95,9 @@ const WhatsAppButtonMinimal = ({
 
       {/* Badge promocional quando tooltip não está visível */}
       {!showTooltip && (
-        <div className="absolute -top-12 -left-16 bg-orange-500 text-white px-3 py-1 rounded-lg text-xs font-bold animate-float shadow-lg whitespace-nowrap">
-          🔥 30% OFF Hoje!
-          <div className="absolute top-full left-6 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-orange-500"></div>
+        <div className="absolute -top-12 -left-16 bg-accent text-white px-3 py-1 rounded-lg text-xs font-bold animate-float shadow-lg whitespace-nowrap">
+          🚀 Orçamento Grátis!
+          <div className="absolute top-full left-6 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-accent"></div>
         </div>
       )}
     </div>
