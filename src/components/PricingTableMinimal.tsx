@@ -91,10 +91,10 @@ const PricingTableMinimal = () => {
                 💰 Formas de Pagamento
               </h3>
               <ul className="space-y-2 text-muted-foreground">
-                <li>• PIX ou Dinheiro</li>
+                <li>• PIX </li>
                 <li>• Cartão de crédito até 12x</li>
                 <li>• Cartão de débito</li>
-                <li>• Dinheiro na entrega</li>
+                <li>• Dinheiro </li>
               </ul>
             </div>
 
