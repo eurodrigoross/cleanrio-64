@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { 
   Calculator, 
   MessageCircle, 
@@ -19,7 +21,9 @@ import {
   Star,
   Clock,
   Award,
-  Zap
+  Zap,
+  User,
+  Phone
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
@@ -197,13 +201,16 @@ const othersSizes: Size[] = [
 
 const BudgetCalculatorGamefied = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(-1); // Começa em -1 para captura de dados
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedSize, setSelectedSize] = useState<Size | null>(null);
   const [wantsImpermeabilization, setWantsImpermeabilization] = useState<boolean | null>(null);
-  const [chairQuantity, setChairQuantity] = useState(4); // Para cadeiras - mínimo 4
+  const [chairQuantity, setChairQuantity] = useState(4);
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
 
   const steps = [
+    "Seus dados",
     "Qual serviço você deseja?",
     "Detalhe do seu item", 
     "Proteção extra?",
@@ -292,9 +299,9 @@ const BudgetCalculatorGamefied = () => {
     
     // Se for "outros", pula direto para o resultado
     if (service.category === "others") {
-      setCurrentStep(1);
+      setCurrentStep(2);
     } else {
-      setCurrentStep(1);
+      setCurrentStep(2);
     }
   };
 
@@ -303,22 +310,28 @@ const BudgetCalculatorGamefied = () => {
     
     // Caso especial para cadeiras - precisa definir quantidade
     if (size.id === "cadeiras") {
-      setCurrentStep(2); // Vai para seleção de quantidade
+      setCurrentStep(3); // Vai para seleção de quantidade
       return;
     }
     
     // Se já incluir impermeabilização (combo), pula para resultado
     if (selectedService?.category === "sofa-combo" || selectedService?.category === "car-clean" || selectedService?.category === "mattress-clean") {
       setWantsImpermeabilization(false);
-      setCurrentStep(3);
+      setCurrentStep(4);
     } else {
-      setCurrentStep(2);
+      setCurrentStep(3);
     }
   };
 
   const handleImpermeabilizationChoice = (choice: boolean) => {
     setWantsImpermeabilization(choice);
-    setCurrentStep(3);
+    setCurrentStep(4);
+  };
+
+  const handleDataFormSubmit = () => {
+    if (customerName.trim() && customerPhone.trim()) {
+      setCurrentStep(1);
+    }
   };
 
   const handleWhatsApp = () => {
@@ -353,14 +366,17 @@ const BudgetCalculatorGamefied = () => {
     setSelectedSize(null);
     setWantsImpermeabilization(null);
     setChairQuantity(4);
+    setCustomerName("");
+    setCustomerPhone("");
   };
 
   const goBack = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
-      if (currentStep === 1) setSelectedService(null);
-      if (currentStep === 2) setSelectedSize(null);
-      if (currentStep === 3) setWantsImpermeabilization(null);
+      if (currentStep === 1) { setCustomerName(""); setCustomerPhone(""); }
+      if (currentStep === 2) setSelectedService(null);
+      if (currentStep === 3) setSelectedSize(null);
+      if (currentStep === 4) setWantsImpermeabilization(null);
     }
   };
 
@@ -408,7 +424,7 @@ const BudgetCalculatorGamefied = () => {
                           </Button>
                         )}
                         <div>
-                          <h3 className="text-2xl font-bold text-foreground">{steps[currentStep]}</h3>
+                          <h3 className="text-2xl font-bold text-foreground">{steps[currentStep + 1]}</h3>
                           <p className="text-muted-foreground text-sm">Passo {currentStep + 1} de {steps.length}</p>
                         </div>
                       </div>
@@ -432,8 +448,71 @@ const BudgetCalculatorGamefied = () => {
 
                   {/* Conteúdo das Etapas */}
                   <div className="p-8">
-                    {/* Etapa 1: Seleção de Serviço */}
+                    {/* Etapa 0: Captura de Dados */}
                     {currentStep === 0 && (
+                      <div className="max-w-md mx-auto">
+                        <div className="text-center mb-8">
+                          <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                            <User size={40} className="text-white" />
+                          </div>
+                          <h4 className="text-2xl font-bold text-foreground mb-3">Vamos começar!</h4>
+                          <p className="text-muted-foreground">Para calcular seu orçamento personalizado, precisamos de algumas informações básicas.</p>
+                        </div>
+
+                        <div className="space-y-6">
+                          <div className="space-y-2">
+                            <Label htmlFor="name" className="text-sm font-medium text-foreground">
+                              Seu nome completo *
+                            </Label>
+                            <div className="relative">
+                              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                              <Input
+                                id="name"
+                                type="text"
+                                placeholder="Digite seu nome completo"
+                                value={customerName}
+                                onChange={(e) => setCustomerName(e.target.value)}
+                                className="pl-10 h-12 text-base"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="phone" className="text-sm font-medium text-foreground">
+                              WhatsApp (com DDD) *
+                            </Label>
+                            <div className="relative">
+                              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                              <Input
+                                id="phone"
+                                type="tel"
+                                placeholder="(21) 99999-9999"
+                                value={customerPhone}
+                                onChange={(e) => setCustomerPhone(e.target.value)}
+                                className="pl-10 h-12 text-base"
+                              />
+                            </div>
+                          </div>
+
+                          <Button
+                            onClick={handleDataFormSubmit}
+                            disabled={!customerName.trim() || !customerPhone.trim()}
+                            className="w-full cta-primary h-12 text-lg"
+                          >
+                            <Sparkles className="mr-2" size={20} />
+                            Continuar para Orçamento
+                          </Button>
+
+                          <p className="text-xs text-muted-foreground text-center leading-relaxed">
+                            Seus dados estão seguros e serão usados apenas para enviar seu orçamento via WhatsApp. 
+                            Não enviamos spam.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Etapa 1: Seleção de Serviço */}
+                    {currentStep === 1 && (
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {services.map((service) => {
                           const IconComponent = service.icon;
@@ -470,7 +549,7 @@ const BudgetCalculatorGamefied = () => {
                     )}
 
                     {/* Etapa 2: Seleção de Tamanho */}
-                    {currentStep === 1 && selectedService && (
+                    {currentStep === 2 && selectedService && (
                       <div>
                         <div className="text-center mb-8">
                           <div className="mb-6">
@@ -520,7 +599,7 @@ const BudgetCalculatorGamefied = () => {
                     )}
 
                     {/* Etapa 3: Impermeabilização */}
-                    {currentStep === 2 && selectedService && selectedSize && (
+                    {currentStep === 3 && selectedService && selectedSize && (
                       <div className="text-center max-w-2xl mx-auto">
                         {selectedSize.id === "cadeiras" ? (
                           // Seleção de quantidade para cadeiras
@@ -534,7 +613,7 @@ const BudgetCalculatorGamefied = () => {
                                   key={qty}
                                   onClick={() => {
                                     setChairQuantity(qty);
-                                    setCurrentStep(3);
+                                    setCurrentStep(4);
                                   }}
                                   variant={chairQuantity === qty ? "default" : "outline"}
                                   className="h-16 text-lg"
@@ -580,7 +659,7 @@ const BudgetCalculatorGamefied = () => {
                     )}
 
                     {/* Etapa 4: Resultado */}
-                    {currentStep === 3 && selectedService && selectedSize && (
+                    {currentStep === 4 && selectedService && selectedSize && (
                       <div className="text-center max-w-3xl mx-auto">
                         <div className="mb-8">
                           <Star className="w-20 h-20 mx-auto text-accent mb-4 animate-pulse" />
