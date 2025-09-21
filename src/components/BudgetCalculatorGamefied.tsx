@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { 
@@ -407,10 +407,14 @@ const BudgetCalculatorGamefied = () => {
                 </Button>
               </DialogTrigger>
               
-              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 border-0">
-                <div className="bg-quiz-background min-h-[600px]">
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 border-0 bg-white">
+                <DialogTitle className="sr-only">{steps[currentStep + 1]}</DialogTitle>
+                <DialogDescription className="sr-only">
+                  Calculadora de orçamento para serviços de higienização e limpeza
+                </DialogDescription>
+                  <div className="bg-white min-h-[600px]">
                   {/* Header do Modal */}
-                  <div className="sticky top-0 bg-quiz-background/95 backdrop-blur-sm border-b border-border p-6 rounded-t-xl z-10">
+                  <div className="sticky top-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 p-6 rounded-t-xl z-10">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         {currentStep > 0 && (
@@ -424,8 +428,8 @@ const BudgetCalculatorGamefied = () => {
                           </Button>
                         )}
                         <div>
-                          <h3 className="text-2xl font-bold text-foreground">{steps[currentStep + 1]}</h3>
-                          <p className="text-muted-foreground text-sm">Passo {currentStep + 1} de {steps.length}</p>
+                          <h3 className="text-2xl font-bold text-gray-900">{steps[currentStep + 1]}</h3>
+                          <p className="text-gray-600 text-sm">Passo {currentStep + 1} de {steps.length}</p>
                         </div>
                       </div>
                       
@@ -452,44 +456,44 @@ const BudgetCalculatorGamefied = () => {
                     {currentStep === 0 && (
                       <div className="max-w-md mx-auto">
                         <div className="text-center mb-8">
-                          <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                          <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
                             <User size={40} className="text-white" />
                           </div>
-                          <h4 className="text-2xl font-bold text-foreground mb-3">Vamos começar!</h4>
-                          <p className="text-muted-foreground">Para calcular seu orçamento personalizado, precisamos de algumas informações básicas.</p>
+                          <h4 className="text-2xl font-bold text-gray-900 mb-3">Vamos começar!</h4>
+                          <p className="text-gray-600">Para calcular seu orçamento personalizado, precisamos de algumas informações básicas.</p>
                         </div>
 
                         <div className="space-y-6">
                           <div className="space-y-2">
-                            <Label htmlFor="name" className="text-sm font-medium text-foreground">
+                            <Label htmlFor="name" className="text-sm font-medium text-gray-900">
                               Seu nome completo *
                             </Label>
                             <div className="relative">
-                              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                               <Input
                                 id="name"
                                 type="text"
                                 placeholder="Digite seu nome completo"
                                 value={customerName}
                                 onChange={(e) => setCustomerName(e.target.value)}
-                                className="pl-10 h-12 text-base"
+                                className="pl-10 h-12 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                               />
                             </div>
                           </div>
 
                           <div className="space-y-2">
-                            <Label htmlFor="phone" className="text-sm font-medium text-foreground">
+                            <Label htmlFor="phone" className="text-sm font-medium text-gray-900">
                               WhatsApp (com DDD) *
                             </Label>
                             <div className="relative">
-                              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                               <Input
                                 id="phone"
                                 type="tel"
                                 placeholder="(21) 99999-9999"
                                 value={customerPhone}
                                 onChange={(e) => setCustomerPhone(e.target.value)}
-                                className="pl-10 h-12 text-base"
+                                className="pl-10 h-12 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                               />
                             </div>
                           </div>
@@ -497,13 +501,13 @@ const BudgetCalculatorGamefied = () => {
                           <Button
                             onClick={handleDataFormSubmit}
                             disabled={!customerName.trim() || !customerPhone.trim()}
-                            className="w-full cta-primary h-12 text-lg"
+                            className="w-full bg-green-600 hover:bg-green-700 text-white h-12 text-lg font-semibold rounded-xl transition-all duration-200 disabled:bg-gray-300 disabled:text-gray-500"
                           >
                             <Sparkles className="mr-2" size={20} />
                             Continuar para Orçamento
                           </Button>
 
-                          <p className="text-xs text-muted-foreground text-center leading-relaxed">
+                          <p className="text-xs text-gray-500 text-center leading-relaxed">
                             Seus dados estão seguros e serão usados apenas para enviar seu orçamento via WhatsApp. 
                             Não enviamos spam.
                           </p>
