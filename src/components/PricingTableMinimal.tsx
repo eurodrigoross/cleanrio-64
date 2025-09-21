@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Star, Phone, Crown } from "lucide-react";
-
 const PricingTableMinimal = () => {
   const handleWhatsApp = (plan: string) => {
     const message = `Olá! Tenho interesse no plano ${plan}. Gostaria de agendar um orçamento!`;
@@ -9,59 +8,32 @@ const PricingTableMinimal = () => {
     const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
   };
-
-  const plans = [
-    {
-      name: "Essencial",
-      description: "Ideal para higienização básica",
-      price: "A partir de R$ 89",
-      features: [
-        "Higienização profunda",
-        "Aspiração potente",
-        "Produtos atóxicos",
-        "Secagem rápida",
-        "Garantia de 3 meses"
-      ],
-      cta: "👉 Quero Meu Orçamento Agora",
-      popular: false,
-      variant: "outline" as const
-    },
-    {
-      name: "Completo",
-      description: "Mais escolhido pelos clientes",
-      price: "A partir de R$ 149",
-      features: [
-        "Tudo do plano Essencial",
-        "Impermeabilização premium",
-        "Anti-ácaros e anti-bactérias",
-        "Proteção contra manchas",
-        "Garantia de 6 meses",
-        "Desconto no retorno"
-      ],
-      cta: "🚀 Calcular Preço Exclusivo",
-      popular: true,
-      variant: "default" as const
-    },
-    {
-      name: "Premium",
-      description: "Máxima proteção e durabilidade",
-      price: "A partir de R$ 199",
-      features: [
-        "Tudo do plano Completo",
-        "Tratamento nano-tecnológico",
-        "Proteção UV avançada",
-        "Atendimento prioritário",
-        "Garantia de 12 meses",
-        "Manutenção gratuita"
-      ],
-      cta: "👉 Quero Meu Orçamento Agora",
-      popular: false,
-      variant: "outline" as const
-    }
-  ];
-
-  return (
-    <section className="section-container bg-neutral-50/50">
+  const plans = [{
+    name: "Essencial",
+    description: "Ideal para higienização básica",
+    price: "A partir de R$ 89",
+    features: ["Higienização profunda", "Aspiração potente", "Produtos atóxicos", "Secagem rápida", "Garantia de 3 meses"],
+    cta: "👉 Quero Meu Orçamento Agora",
+    popular: false,
+    variant: "outline" as const
+  }, {
+    name: "Completo",
+    description: "Mais escolhido pelos clientes",
+    price: "A partir de R$ 149",
+    features: ["Tudo do plano Essencial", "Impermeabilização premium", "Anti-ácaros e anti-bactérias", "Proteção contra manchas", "Garantia de 6 meses", "Desconto no retorno"],
+    cta: "🚀 Calcular Preço Exclusivo",
+    popular: true,
+    variant: "default" as const
+  }, {
+    name: "Premium",
+    description: "Máxima proteção e durabilidade",
+    price: "A partir de R$ 199",
+    features: ["Tudo do plano Completo", "Tratamento nano-tecnológico", "Proteção UV avançada", "Atendimento prioritário", "Garantia de 12 meses", "Manutenção gratuita"],
+    cta: "👉 Quero Meu Orçamento Agora",
+    popular: false,
+    variant: "outline" as const
+  }];
+  return <section className="section-container bg-neutral-50/50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="section-title">
@@ -73,23 +45,16 @@ const PricingTableMinimal = () => {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
-          {plans.map((plan, index) => (
-            <div
-              key={index}
-              className={`pricing-card ${plan.popular ? 'featured' : ''} relative`}
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {plan.popular && (
-                <div className="badge-popular">
+          {plans.map((plan, index) => <div key={index} className={`pricing-card ${plan.popular ? 'featured' : ''} relative`} style={{
+          animationDelay: `${index * 0.1}s`
+        }}>
+              {plan.popular && <div className="badge-popular">
                   <Star size={16} className="mr-1" />
                   Mais Popular
-                </div>
-              )}
+                </div>}
 
               <div className="text-center mb-8">
-                {plan.name === "Premium" && (
-                  <Crown className="text-primary mx-auto mb-4" size={32} />
-                )}
+                {plan.name === "Premium" && <Crown className="text-primary mx-auto mb-4" size={32} />}
                 
                 <h3 className="text-2xl font-bold mb-2 text-foreground">
                   {plan.name}
@@ -103,36 +68,19 @@ const PricingTableMinimal = () => {
               </div>
 
               <ul className="space-y-4 mb-8">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start gap-3">
-                    <CheckCircle 
-                      size={20} 
-                      className={`flex-shrink-0 mt-0.5 ${
-                        plan.popular ? 'text-accent' : 'text-primary'
-                      }`} 
-                    />
+                {plan.features.map((feature, featureIndex) => <li key={featureIndex} className="flex items-start gap-3">
+                    <CheckCircle size={20} className={`flex-shrink-0 mt-0.5 ${plan.popular ? 'text-accent' : 'text-primary'}`} />
                     <span className="text-muted-foreground">
                       {feature}
                     </span>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
 
-              <Button
-                onClick={() => handleWhatsApp(plan.name)}
-                variant={plan.variant}
-                className={`w-full ${
-                  plan.popular 
-                    ? 'cta-primary' 
-                    : 'cta-secondary'
-                }`}
-                size="lg"
-              >
+              <Button onClick={() => handleWhatsApp(plan.name)} variant={plan.variant} className={`w-full ${plan.popular ? 'cta-primary' : 'cta-secondary'}`} size="lg">
                 <Phone size={20} className="mr-2" />
                 {plan.cta}
               </Button>
-            </div>
-          ))}
+            </div>)}
         </div>
 
         {/* Informações adicionais */}
@@ -143,7 +91,7 @@ const PricingTableMinimal = () => {
                 💰 Formas de Pagamento
               </h3>
               <ul className="space-y-2 text-muted-foreground">
-                <li>• PIX com 10% de desconto</li>
+                <li>• PIX ou Dinheiro</li>
                 <li>• Cartão de crédito até 12x</li>
                 <li>• Cartão de débito</li>
                 <li>• Dinheiro na entrega</li>
@@ -178,8 +126,6 @@ const PricingTableMinimal = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default PricingTableMinimal;
