@@ -382,11 +382,12 @@ const BudgetCalculatorGamefied = () => {
 
   const handleFinalConfirmation = () => {
     setIsConfirmed(true);
-    // Aguarda 3 segundos e fecha o modal
+    // Aguarda 2 segundos e redireciona para WhatsApp
     setTimeout(() => {
+      handleWhatsApp();
       setIsOpen(false);
       setIsConfirmed(false);
-    }, 3000);
+    }, 2000);
   };
 
   const handleDataFormSubmit = () => {
@@ -396,29 +397,30 @@ const BudgetCalculatorGamefied = () => {
   };
 
   const handleWhatsApp = () => {
-    if (selectedService?.category === "others" && selectedSize?.id !== "cadeiras") {
-      const message = `🎯 SOLICITAÇÃO MACHADO CLEAN:\n\n• Cliente: ${customerName}\n• Telefone: ${customerPhone}\n• Serviço: ${selectedService.name}\n• Item: ${selectedSize?.name}\n• Data agendada: ${selectedDate ? format(selectedDate, "dd/MM/yyyy") : "A definir"}\n• Horário: ${selectedTimeSlot}\n• Endereço: ${address}, ${number}${complement ? `, ${complement}` : ""}\n• Forma de pagamento: ${paymentMethod}\n\n🏠 Preciso de uma visita para orçamento personalizado!\n\n📞 Quando podem vir na minha casa?`;
-      const phone = "5521999999999";
-      const encodedMessage = encodeURIComponent(message);
-      const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
-      window.open(whatsappUrl, '_blank');
-      setIsOpen(false);
-      return;
-    }
-
     const { cashPrice, installmentPrice } = calculatePrices();
     const sizeText = selectedSize ? ` ${selectedSize.name}` : '';
     const quantityText = selectedSize?.id === "cadeiras" ? ` (${chairQuantity} unidades)` : '';
     const impermeabilizationText = wantsImpermeabilization ? ' + Impermeabilização Premium' : '';
     const finalPrice = paymentMethod === "pix" ? cashPrice : installmentPrice;
     
-    const message = `💎 ORÇAMENTO CONFIRMADO MACHADO CLEAN:\n\n👤 CLIENTE: ${customerName}\n📞 TELEFONE: ${customerPhone}\n\n🛋️ SERVIÇO: ${selectedService?.name}${sizeText}${quantityText}${impermeabilizationText}\n\n📅 AGENDAMENTO:\n• Data: ${selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""}\n• Horário: ${selectedTimeSlot}\n\n📍 ENDEREÇO:\n${address}, ${number}${complement ? `, ${complement}` : ""}\n\n💰 VALOR:\n• Forma de pagamento: ${paymentMethod === "pix" ? "PIX/Dinheiro" : "Cartão parcelado"}\n• Total: R$ ${finalPrice}\n\n🏆 Inclui:\n• Certificado de garantia 6 meses\n• Neutralização de odores\n• Proteção contra ácaros e manchas\n• Atendimento premium no RJ\n\n✅ CONFIRMO ESTE AGENDAMENTO!`;
+    // Verifica se é um serviço que precisa de visita para orçamento
+    if (selectedService?.category === "others" && selectedSize?.id !== "cadeiras") {
+      const message = `🎯 SOLICITAÇÃO MACHADO CLEAN - ORÇAMENTO PERSONALIZADO\n\n👤 CLIENTE: ${customerName}\n📞 TELEFONE: ${customerPhone}\n\n🛋️ SERVIÇO: ${selectedService.name}\n📦 ITEM: ${selectedSize?.name}\n\n📅 AGENDAMENTO PREFERIDO:\n• Data: ${selectedDate ? format(selectedDate, "dd/MM/yyyy") : "A definir"}\n• Horário: ${selectedTimeSlot}\n\n📍 ENDEREÇO PARA VISITA:\n${address}, ${number}${complement ? `, ${complement}` : ""}\nCEP: ${cep}\n\n💰 FORMA DE PAGAMENTO PREFERIDA: ${paymentMethod === "pix" ? "PIX/Dinheiro" : "Cartão parcelado"}\n\n🏠 Preciso de uma visita técnica para orçamento personalizado!\n\n📞 Quando podem vir fazer a avaliação?`;
+      
+      const phone = "5521991612893";
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+      window.open(whatsappUrl, '_blank');
+      return;
+    }
+
+    // Mensagem padrão para serviços com preço definido
+    const message = `💎 AGENDAMENTO CONFIRMADO - MACHADO CLEAN\n\n👤 DADOS DO CLIENTE:\n• Nome: ${customerName}\n• Telefone: ${customerPhone}\n\n🛋️ SERVIÇO CONTRATADO:\n• ${selectedService?.name}${sizeText}${quantityText}${impermeabilizationText}\n\n📅 DATA E HORÁRIO:\n• ${selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""}\n• ${selectedTimeSlot}\n\n📍 ENDEREÇO DO SERVIÇO:\n• ${address}, ${number}${complement ? `, ${complement}` : ""}\n• CEP: ${cep}\n\n💰 PAGAMENTO:\n• Forma: ${paymentMethod === "pix" ? "PIX/Dinheiro" : "Cartão parcelado"}\n• Valor: R$ ${finalPrice}\n\n🏆 INCLUI:\n• Certificado de garantia 6 meses\n• Certificado de qualidade assinado\n• Termo de garantia oficial\n• Neutralização de odores profunda\n• Proteção contra ácaros e fungos\n• Tratamento anti-bacteriano\n• Produtos premium importados\n• Técnicos especialistas certificados\n• Seguro de responsabilidade civil\n• Atendimento premium no RJ\n• Suporte pós-serviço 24h\n• Satisfação 100% garantida\n\n✅ CONFIRMO ESTE AGENDAMENTO!\n\nPor favor, envie o PIX ou confirme os detalhes finais.`;
     
-    const phone = "5521999999999";
+    const phone = "5521991612893";
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
-    setIsOpen(false);
   };
 
   const openCalculator = () => {
