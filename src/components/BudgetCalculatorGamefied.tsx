@@ -259,10 +259,9 @@ const BudgetCalculatorGamefied = () => {
     }
   };
 
-  // Função para filtrar apenas dias úteis (segunda a sexta)
-  const isWeekday = (date: Date) => {
-    const day = date.getDay();
-    return day !== 0 && day !== 6; // 0 = domingo, 6 = sábado
+  // Função para permitir todos os dias da semana (segunda a segunda)
+  const isAvailableDay = (date: Date) => {
+    return true; // Permite todos os dias da semana
   };
 
   const progress = ((currentStep + 1) / steps.length) * 100;
@@ -734,7 +733,7 @@ const BudgetCalculatorGamefied = () => {
                       <div className="mb-8">
                         <CalendarIcon className="w-20 h-20 mx-auto text-primary mb-4" />
                         <h4 className="text-3xl font-bold text-foreground mb-4">Escolha o melhor dia e horário</h4>
-                        <p className="text-muted-foreground">Atendemos de segunda a sexta-feira, das 7h às 19h</p>
+                        <p className="text-muted-foreground">Atendemos todos os dias da semana, das 7h às 19h</p>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -745,7 +744,7 @@ const BudgetCalculatorGamefied = () => {
                             mode="single"
                             selected={selectedDate}
                             onSelect={setSelectedDate}
-                            disabled={(date) => !isWeekday(date) || date < new Date()}
+                            disabled={(date) => !isAvailableDay(date) || date < new Date()}
                             className="rounded-md border pointer-events-auto mx-auto"
                           />
                         </div>
@@ -953,7 +952,7 @@ const BudgetCalculatorGamefied = () => {
                         </div>
                       </div>
 
-                      <div className="card-minimal p-6 mb-8">
+                       <div className="card-minimal p-6 mb-8">
                         <h5 className="text-lg font-bold text-foreground mb-4">🏆 Incluído no Serviço</h5>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                           <div className="flex items-center gap-2">
@@ -962,15 +961,47 @@ const BudgetCalculatorGamefied = () => {
                           </div>
                           <div className="flex items-center gap-2">
                             <CheckCircle className="w-4 h-4 text-accent" />
-                            <span>Neutralização de odores</span>
+                            <span>Certificado de qualidade assinado</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <CheckCircle className="w-4 h-4 text-accent" />
-                            <span>Proteção contra ácaros</span>
+                            <span>Termo de garantia oficial</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-accent" />
+                            <span>Neutralização de odores profunda</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-accent" />
+                            <span>Proteção contra ácaros e fungos</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-accent" />
+                            <span>Tratamento anti-bacteriano</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-accent" />
+                            <span>Produtos premium importados</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-accent" />
+                            <span>Técnicos especialistas certificados</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-accent" />
+                            <span>Seguro de responsabilidade civil</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <CheckCircle className="w-4 h-4 text-accent" />
                             <span>Atendimento premium no RJ</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-accent" />
+                            <span>Suporte pós-serviço 24h</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-accent" />
+                            <span>Satisfação 100% garantida</span>
                           </div>
                         </div>
                       </div>
