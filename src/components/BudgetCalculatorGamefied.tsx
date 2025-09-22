@@ -3,6 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
+import { format } from "date-fns";
 import { 
   Calculator, 
   MessageCircle, 
@@ -23,9 +27,13 @@ import {
   Award,
   Zap,
   User,
-  Phone
+  Phone,
+  Calendar as CalendarIcon,
+  MapPin,
+  Home
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
 
 interface Service {
   id: string;
@@ -208,14 +216,54 @@ const BudgetCalculatorGamefied = () => {
   const [chairQuantity, setChairQuantity] = useState(4);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
+  const [cep, setCep] = useState("");
+  const [address, setAddress] = useState("");
+  const [number, setNumber] = useState("");
+  const [complement, setComplement] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
   const steps = [
     "Seus dados",
     "Qual serviço você deseja?",
     "Detalhe do seu item", 
     "Proteção extra?",
-    "Seu orçamento exclusivo"
+    "Agendamento",
+    "Endereço",
+    "Resumo final",
+    "Confirmação"
   ];
+
+  // Horários disponíveis de 7h às 19h com blocos de 2 horas
+  const timeSlots = [
+    "07:00 - 09:00",
+    "09:00 - 11:00", 
+    "11:00 - 13:00",
+    "13:00 - 15:00",
+    "15:00 - 17:00",
+    "17:00 - 19:00"
+  ];
+
+  // Função para buscar CEP
+  const fetchAddress = async (cep: string) => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+      if (!data.erro) {
+        setAddress(`${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar CEP:', error);
+    }
+  };
+
+  // Função para filtrar apenas dias úteis (segunda a sexta)
+  const isWeekday = (date: Date) => {
+    const day = date.getDay();
+    return day !== 0 && day !== 6; // 0 = domingo, 6 = sábado
+  };
 
   const progress = ((currentStep + 1) / steps.length) * 100;
 
@@ -316,6 +364,32 @@ const BudgetCalculatorGamefied = () => {
     setCurrentStep(4);
   };
 
+  const handleScheduleConfirm = () => {
+    if (selectedDate && selectedTimeSlot) {
+      setCurrentStep(5);
+    }
+  };
+
+  const handleAddressConfirm = () => {
+    if (cep && address && number) {
+      setCurrentStep(6);
+    }
+  };
+
+  const handlePaymentSelection = (method: string) => {
+    setPaymentMethod(method);
+    setCurrentStep(7);
+  };
+
+  const handleFinalConfirmation = () => {
+    setIsConfirmed(true);
+    // Aguarda 3 segundos e fecha o modal
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsConfirmed(false);
+    }, 3000);
+  };
+
   const handleDataFormSubmit = () => {
     if (customerName.trim() && customerPhone.trim()) {
       setCurrentStep(1);
@@ -324,7 +398,7 @@ const BudgetCalculatorGamefied = () => {
 
   const handleWhatsApp = () => {
     if (selectedService?.category === "others" && selectedSize?.id !== "cadeiras") {
-      const message = `🎯 SOLICITAÇÃO MACHADO CLEAN:\n\n• Serviço: ${selectedService.name}\n• Item: ${selectedSize?.name}\n• Observação: ${selectedService.description}\n\n🏠 Preciso de uma visita para orçamento personalizado!\n\n📞 Quando podem vir na minha casa?`;
+      const message = `🎯 SOLICITAÇÃO MACHADO CLEAN:\n\n• Cliente: ${customerName}\n• Telefone: ${customerPhone}\n• Serviço: ${selectedService.name}\n• Item: ${selectedSize?.name}\n• Data agendada: ${selectedDate ? format(selectedDate, "dd/MM/yyyy") : "A definir"}\n• Horário: ${selectedTimeSlot}\n• Endereço: ${address}, ${number}${complement ? `, ${complement}` : ""}\n• Forma de pagamento: ${paymentMethod}\n\n🏠 Preciso de uma visita para orçamento personalizado!\n\n📞 Quando podem vir na minha casa?`;
       const phone = "5521999999999";
       const encodedMessage = encodeURIComponent(message);
       const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
@@ -337,8 +411,9 @@ const BudgetCalculatorGamefied = () => {
     const sizeText = selectedSize ? ` ${selectedSize.name}` : '';
     const quantityText = selectedSize?.id === "cadeiras" ? ` (${chairQuantity} unidades)` : '';
     const impermeabilizationText = wantsImpermeabilization ? ' + Impermeabilização Premium' : '';
+    const finalPrice = paymentMethod === "pix" ? cashPrice : installmentPrice;
     
-    const message = `💎 ORÇAMENTO EXCLUSIVO MACHADO CLEAN:\n\n• ${selectedService?.name}${sizeText}${quantityText}${impermeabilizationText}\n\n💰 VALORES:\n▸ À vista (Pix/Dinheiro): R$ ${cashPrice}\n▸ Parcelado: 12x de R$ ${Math.round(installmentPrice/12)} (total R$ ${installmentPrice})\n\n🏆 Inclui:\n• Certificado de garantia 6 meses\n• Neutralização de odores\n• Proteção contra ácaros e manchas\n• Atendimento premium no RJ\n\n🚀 Quero fechar este serviço agora!`;
+    const message = `💎 ORÇAMENTO CONFIRMADO MACHADO CLEAN:\n\n👤 CLIENTE: ${customerName}\n📞 TELEFONE: ${customerPhone}\n\n🛋️ SERVIÇO: ${selectedService?.name}${sizeText}${quantityText}${impermeabilizationText}\n\n📅 AGENDAMENTO:\n• Data: ${selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""}\n• Horário: ${selectedTimeSlot}\n\n📍 ENDEREÇO:\n${address}, ${number}${complement ? `, ${complement}` : ""}\n\n💰 VALOR:\n• Forma de pagamento: ${paymentMethod === "pix" ? "PIX/Dinheiro" : "Cartão parcelado"}\n• Total: R$ ${finalPrice}\n\n🏆 Inclui:\n• Certificado de garantia 6 meses\n• Neutralização de odores\n• Proteção contra ácaros e manchas\n• Atendimento premium no RJ\n\n✅ CONFIRMO ESTE AGENDAMENTO!`;
     
     const phone = "5521999999999";
     const encodedMessage = encodeURIComponent(message);
@@ -356,6 +431,14 @@ const BudgetCalculatorGamefied = () => {
     setChairQuantity(4);
     setCustomerName("");
     setCustomerPhone("");
+    setSelectedDate(undefined);
+    setSelectedTimeSlot("");
+    setCep("");
+    setAddress("");
+    setNumber("");
+    setComplement("");
+    setPaymentMethod("");
+    setIsConfirmed(false);
   };
 
   const goBack = () => {
@@ -645,17 +728,163 @@ const BudgetCalculatorGamefied = () => {
                     </div>
                   )}
 
-                  {/* Etapa 4: Resultado */}
-                  {currentStep === 4 && selectedService && selectedSize && (
+                  {/* Etapa 4: Agendamento */}
+                  {currentStep === 4 && (
+                    <div className="text-center max-w-3xl mx-auto">
+                      <div className="mb-8">
+                        <CalendarIcon className="w-20 h-20 mx-auto text-primary mb-4" />
+                        <h4 className="text-3xl font-bold text-foreground mb-4">Escolha o melhor dia e horário</h4>
+                        <p className="text-muted-foreground">Atendemos de segunda a sexta-feira, das 7h às 19h</p>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Calendário */}
+                        <div className="card-minimal p-6">
+                          <h5 className="text-lg font-bold text-foreground mb-4">📅 Selecione a data</h5>
+                          <Calendar
+                            mode="single"
+                            selected={selectedDate}
+                            onSelect={setSelectedDate}
+                            disabled={(date) => !isWeekday(date) || date < new Date()}
+                            className="rounded-md border pointer-events-auto mx-auto"
+                          />
+                        </div>
+
+                        {/* Horários */}
+                        <div className="card-minimal p-6">
+                          <h5 className="text-lg font-bold text-foreground mb-4">🕐 Selecione o horário</h5>
+                          <div className="grid grid-cols-1 gap-3">
+                            {timeSlots.map((slot) => (
+                              <Button
+                                key={slot}
+                                onClick={() => setSelectedTimeSlot(slot)}
+                                variant={selectedTimeSlot === slot ? "default" : "outline"}
+                                className="h-12 text-base"
+                              >
+                                {slot}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {selectedDate && selectedTimeSlot && (
+                        <div className="mt-8">
+                          <div className="card-minimal p-4 mb-6 bg-green-50 border-green-200">
+                            <div className="text-green-800 font-medium">
+                              ✅ Agendamento selecionado: {format(selectedDate, "dd/MM/yyyy")} às {selectedTimeSlot}
+                            </div>
+                          </div>
+                          
+                          <Button
+                            onClick={handleScheduleConfirm}
+                            size="lg"
+                            className="cta-primary text-lg px-8 py-4"
+                          >
+                            Confirmar Agendamento
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Etapa 5: Endereço */}
+                  {currentStep === 5 && (
+                    <div className="text-center max-w-2xl mx-auto">
+                      <div className="mb-8">
+                        <MapPin className="w-20 h-20 mx-auto text-primary mb-4" />
+                        <h4 className="text-3xl font-bold text-foreground mb-4">Onde você está localizado?</h4>
+                        <p className="text-muted-foreground">Precisamos do endereço para nossos técnicos chegarem até você</p>
+                      </div>
+
+                      <div className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="cep" className="text-sm font-medium text-foreground">CEP *</Label>
+                            <Input
+                              id="cep"
+                              type="text"
+                              placeholder="00000-000"
+                              value={cep}
+                              onChange={(e) => {
+                                setCep(e.target.value);
+                                if (e.target.value.length === 8) {
+                                  fetchAddress(e.target.value);
+                                }
+                              }}
+                              className="h-12 text-base"
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="number" className="text-sm font-medium text-foreground">Número *</Label>
+                            <Input
+                              id="number"
+                              type="text"
+                              placeholder="123"
+                              value={number}
+                              onChange={(e) => setNumber(e.target.value)}
+                              className="h-12 text-base"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="address" className="text-sm font-medium text-foreground">Endereço completo *</Label>
+                          <Textarea
+                            id="address"
+                            placeholder="Rua, bairro, cidade..."
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            className="min-h-[80px] text-base"
+                            readOnly
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="complement" className="text-sm font-medium text-foreground">Complemento</Label>
+                          <Input
+                            id="complement"
+                            type="text"
+                            placeholder="Apartamento, bloco, observações..."
+                            value={complement}
+                            onChange={(e) => setComplement(e.target.value)}
+                            className="h-12 text-base"
+                          />
+                        </div>
+
+                        <Button
+                          onClick={handleAddressConfirm}
+                          disabled={!cep || !address || !number}
+                          size="lg"
+                          className="cta-primary text-lg px-8 py-4 w-full md:w-auto"
+                        >
+                          <Home className="mr-2" size={20} />
+                          Confirmar Endereço
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Etapa 6: Resumo e Pagamento */}
+                  {currentStep === 6 && selectedService && selectedSize && (
                     <div className="text-center max-w-3xl mx-auto">
                       <div className="mb-8">
                         <Star className="w-20 h-20 mx-auto text-accent mb-4 animate-pulse" />
-                        <h4 className="text-3xl font-bold text-foreground mb-4">Seu Orçamento Exclusivo</h4>
+                        <h4 className="text-3xl font-bold text-foreground mb-4">Resumo do seu pedido</h4>
                       </div>
 
                       <div className="card-minimal mb-8 p-6">
-                        <h5 className="text-xl font-bold text-foreground mb-4">Resumo do Pedido</h5>
-                        <div className="text-left space-y-2">
+                        <h5 className="text-xl font-bold text-foreground mb-4">📋 Detalhes do Serviço</h5>
+                        <div className="text-left space-y-3">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Cliente:</span>
+                            <span className="font-medium text-foreground">{customerName}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Telefone:</span>
+                            <span className="font-medium text-foreground">{customerPhone}</span>
+                          </div>
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">Serviço:</span>
                             <span className="font-medium text-foreground">{selectedService.name}</span>
@@ -676,22 +905,51 @@ const BudgetCalculatorGamefied = () => {
                               <span className="font-medium text-accent">✓ Incluída</span>
                             </div>
                           )}
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Data:</span>
+                            <span className="font-medium text-foreground">
+                              {selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Horário:</span>
+                            <span className="font-medium text-foreground">{selectedTimeSlot}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Endereço:</span>
+                            <span className="font-medium text-foreground text-right">
+                              {address}, {number}{complement ? `, ${complement}` : ""}
+                            </span>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div className="card-minimal p-6 border-2 border-accent">
-                          <div className="text-lg font-bold text-accent mb-2">💰 À Vista (Pix/Dinheiro)</div>
-                          <div className="text-3xl font-black text-foreground">R$ {calculatePrices().cashPrice}</div>
-                          <div className="text-sm text-muted-foreground mt-2">Melhor preço garantido</div>
-                        </div>
-                        
-                        <div className="card-minimal p-6">
-                          <div className="text-lg font-bold text-primary mb-2">💳 Parcelado</div>
-                          <div className="text-2xl font-bold text-foreground">
-                            12x de R$ {Math.round(calculatePrices().installmentPrice / 12)}
+                      <div className="mb-8">
+                        <h5 className="text-xl font-bold text-foreground mb-4">💳 Como você prefere pagar?</h5>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div 
+                            onClick={() => handlePaymentSelection("pix")}
+                            className={`card-minimal p-6 cursor-pointer transition-all duration-300 ${
+                              paymentMethod === "pix" ? "border-2 border-accent bg-accent/5" : "hover:border-accent"
+                            }`}
+                          >
+                            <div className="text-lg font-bold text-accent mb-2">💰 PIX / Dinheiro</div>
+                            <div className="text-3xl font-black text-foreground">R$ {calculatePrices().cashPrice}</div>
+                            <div className="text-sm text-muted-foreground mt-2">Melhor preço garantido</div>
                           </div>
-                          <div className="text-sm text-muted-foreground mt-2">Total: R$ {calculatePrices().installmentPrice}</div>
+                          
+                          <div 
+                            onClick={() => handlePaymentSelection("cartao")}
+                            className={`card-minimal p-6 cursor-pointer transition-all duration-300 ${
+                              paymentMethod === "cartao" ? "border-2 border-primary bg-primary/5" : "hover:border-primary"
+                            }`}
+                          >
+                            <div className="text-lg font-bold text-primary mb-2">💳 Cartão</div>
+                            <div className="text-2xl font-bold text-foreground">
+                              12x de R$ {Math.round(calculatePrices().installmentPrice / 12)}
+                            </div>
+                            <div className="text-sm text-muted-foreground mt-2">Total: R$ {calculatePrices().installmentPrice}</div>
+                          </div>
                         </div>
                       </div>
 
@@ -716,15 +974,86 @@ const BudgetCalculatorGamefied = () => {
                           </div>
                         </div>
                       </div>
+                    </div>
+                  )}
 
-                      <Button
-                        onClick={handleWhatsApp}
-                        size="lg"
-                        className="cta-primary text-xl px-12 py-6 group w-full md:w-auto"
-                      >
-                        <MessageCircle className="mr-4 group-hover:scale-110 transition-transform duration-300" size={28} />
-                        👉 Quero Meu Orçamento Agora
-                      </Button>
+                  {/* Etapa 7: Confirmação */}
+                  {currentStep === 7 && !isConfirmed && (
+                    <div className="text-center max-w-2xl mx-auto">
+                      <div className="mb-8">
+                        <CheckCircle className="w-20 h-20 mx-auto text-green-500 mb-4" />
+                        <h4 className="text-3xl font-bold text-foreground mb-4">Pronto para finalizar?</h4>
+                        <p className="text-muted-foreground">
+                          Ao confirmar, enviaremos todas as informações para nosso time via WhatsApp
+                        </p>
+                      </div>
+
+                      <div className="card-minimal p-6 mb-8 bg-blue-50 border-blue-200">
+                        <div className="text-blue-800">
+                          <div className="font-bold mb-2">📋 Resumo Final:</div>
+                          <div className="text-sm space-y-1">
+                            <div>🛋️ {selectedService?.name} - {selectedSize?.name}</div>
+                            <div>📅 {selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""} às {selectedTimeSlot}</div>
+                            <div>💰 {paymentMethod === "pix" ? "PIX" : "Cartão"} - R$ {paymentMethod === "pix" ? calculatePrices().cashPrice : calculatePrices().installmentPrice}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <Button
+                          onClick={handleFinalConfirmation}
+                          size="lg"
+                          className="cta-primary text-xl px-12 py-6 w-full"
+                        >
+                          <MessageCircle className="mr-4" size={28} />
+                          ✅ Confirmar Agendamento
+                        </Button>
+
+                        <p className="text-xs text-muted-foreground">
+                          Ao confirmar, você será redirecionado para o WhatsApp com todas as informações
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Etapa de Confirmação Final */}
+                  {isConfirmed && (
+                    <div className="text-center max-w-2xl mx-auto">
+                      <div className="mb-8">
+                        <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+                          <CheckCircle size={50} className="text-white" />
+                        </div>
+                        <h4 className="text-3xl font-bold text-green-600 mb-4">Agendamento Confirmado!</h4>
+                        <p className="text-muted-foreground text-lg">
+                          Obrigado, {customerName}! Recebemos seu agendamento com sucesso.
+                        </p>
+                      </div>
+
+                      <div className="card-minimal p-6 mb-8 bg-green-50 border-green-200">
+                        <div className="text-green-800">
+                          <div className="font-bold text-lg mb-4">🎉 Próximos passos:</div>
+                          <div className="text-left space-y-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
+                              <span>Um de nossos atendentes entrará em contato em breve</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">2</div>
+                              <span>Confirmaremos todos os detalhes do seu agendamento</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
+                              <span>Nossa equipe chegará no horário combinado</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="text-center">
+                        <p className="text-sm text-muted-foreground">
+                          Esta janela será fechada automaticamente...
+                        </p>
+                      </div>
                     </div>
                   )}
                 </div>
