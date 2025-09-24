@@ -1,6 +1,54 @@
-# Welcome to your Lovable project
+# Machado Clean - Sistema de Higienização e Impermeabilização
 
-## Project info
+## 📋 Visão Geral
+
+Sistema web completo para empresa de higienização e impermeabilização de estofados e veículos no Rio de Janeiro. Combina landing page otimizada para conversão com dashboard administrativo robusto.
+
+## 🎯 Principais Funcionalidades
+
+- **Landing Page Otimizada** - Hero section, calculadora de orçamento, prova social
+- **Calculadora Gamificada** - Sistema de cotação em 8 etapas com agendamento
+- **Dashboard Administrativo** - Gestão de leads, preços e relatórios
+- **Integração WhatsApp** - Contato direto e automatizado
+- **Sistema Responsivo** - Mobile-first com design moderno
+
+## 📚 Documentação Completa
+
+### 📖 Guias Principais
+- **[📋 Visão Geral](./docs/README.md)** - Introdução completa ao projeto
+- **[🚀 Instalação](./docs/SETUP.md)** - Guia de configuração e setup
+- **[🏗️ Arquitetura](./docs/ARCHITECTURE.md)** - Documentação técnica detalhada
+- **[📱 Componentes](./docs/COMPONENTS.md)** - Guia completo de componentes
+- **[👨‍💻 Desenvolvimento](./docs/DEVELOPMENT.md)** - Padrões e fluxos de trabalho
+- **[🌐 APIs](./docs/API.md)** - Integrações e endpoints
+- **[📊 Resumo Executivo](./docs/EXECUTIVE_SUMMARY.md)** - Visão estratégica do projeto
+
+### 🗂️ [Índice Completo](./docs/INDEX.md)
+Navegação organizada por toda a documentação com links diretos para tópicos específicos.
+
+## 🚀 Quick Start
+
+```bash
+# Instalar dependências
+npm install
+
+# Configurar ambiente
+cp .env.example .env.local
+
+# Iniciar desenvolvimento
+npm run dev
+```
+
+## 💻 Stack Tecnológico
+
+- **React 18** + TypeScript
+- **Vite 5** - Build tool otimizado
+- **shadcn/ui** + Tailwind CSS - Design system
+- **React Router DOM** - Roteamento
+- **TanStack Query** - Gerenciamento de estado
+- **React Hook Form** + Zod - Formulários e validação
+
+## 📊 Project Info
 
 **URL**: https://lovable.dev/projects/895f11e1-d314-4fe0-8628-f269e7bcbe3d
 

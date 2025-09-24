@@ -454,15 +454,40 @@ const BudgetCalculatorGamefied = () => {
 
   return (
     <>
-      <section className="section-container bg-background text-center" data-section="budget-calculator">
+      <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden text-center" data-section="budget-calculator">
+        {/* Background moderno */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/20 to-background"></div>
+          <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 1200 800"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="xMidYMid slice"
+          >
+            <defs>
+              <pattern id="calculatorGrid" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M 80 0 L 0 0 0 80" fill="none" stroke="hsl(var(--foreground))" strokeOpacity="0.02" strokeWidth="1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#calculatorGrid)" />
+          </svg>
+        </div>
+
         <div className="container mx-auto px-4 relative z-10">
-          <Sparkles className="w-16 h-16 mx-auto mb-8 text-primary animate-float" />
+          <div className="w-16 h-16 mx-auto mb-8 rounded-2xl bg-gradient-to-br from-accent to-primary flex items-center justify-center animate-float">
+            <Sparkles className="text-white" size={32} />
+          </div>
           
-          <h2 className="section-title">
-            Simulador de <span className="text-accent">Orçamento Inteligente</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
+            Simulador de{" "}
+            <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+              Orçamento Inteligente
+            </span>
           </h2>
           
-          <p className="section-subtitle">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12">
             Tecnologia exclusiva para calcular seu preço personalizado em 30 segundos
           </p>
           
@@ -471,7 +496,7 @@ const BudgetCalculatorGamefied = () => {
               <DialogTrigger asChild>
                 <Button 
                   size="lg"
-                  className="cta-primary text-xl px-12 py-6 group relative overflow-hidden"
+                  className="bg-gradient-to-r from-accent to-primary hover:from-accent/90 hover:to-primary/90 text-white text-xl px-12 py-6 shadow-lg shadow-accent/25 transition-all duration-300 group rounded-2xl"
                 >
                   <Calculator className="mr-4 group-hover:rotate-12 transition-transform duration-300" size={28} />
                   <span className="relative z-10">🚀 Calcular Preço Exclusivo</span>

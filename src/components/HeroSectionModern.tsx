@@ -1,136 +1,301 @@
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Users, Shield, Clock, Star, Award, Zap } from "lucide-react";
+import { Shield, Droplets, CheckCircle, Star, ArrowRight, Sparkles, Phone } from 'lucide-react';
+import { cn } from "@/lib/utils";
+import heroImage from "@/assets/hero-image.jpg";
 
-const HeroSectionModern = () => {
+interface HeroSectionModernProps {
+  className?: string;
+}
+
+export default function HeroSectionModern({ className }: HeroSectionModernProps = {}) {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setMousePosition({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top
+        });
+      }
+    };
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('mousemove', handleMouseMove);
+      return () => container.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, []);
+
   const handleWhatsApp = () => {
-    const message = "Olá! Vi o site da Machado Clean e quero agendar um serviço de higienização!";
-    const phone = "5521999999999";
+    const message = "Olá! Quero descobrir meu orçamento exclusivo para higienização e impermeabilização!";
+    const phone = "5521991612893";
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
   };
 
+  const handleScrollToCalculator = () => {
+    const calculatorSection = document.querySelector('[data-section="budget-calculator"]');
+    if (calculatorSection) {
+      calculatorSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="hero-section">
-      {/* Video Background com Overlay */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Placeholder para vídeo de fundo */}
-        <div className="absolute inset-0 bg-gradient-to-br from-machado-royal via-machado-light to-machado-purple opacity-95"></div>
-        
-        {/* Partículas flutuantes mais sofisticadas */}
-        <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full animate-float blur-sm"></div>
-        <div className="absolute bottom-40 right-20 w-24 h-24 bg-machado-green/20 rounded-full animate-float blur-sm" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-10 w-16 h-16 bg-machado-neon/30 rounded-full animate-float blur-sm" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-32 right-32 w-20 h-20 bg-machado-purple/20 rounded-full animate-float blur-sm" style={{ animationDelay: '3s' }}></div>
-        <div className="absolute bottom-20 left-32 w-28 h-28 bg-white/5 rounded-full animate-float blur-sm" style={{ animationDelay: '4s' }}></div>
-      </div>
-
-      <div className="hero-content animate-slide-in-3d">
-        <h1 className="hero-title mb-8">
-          Seu Estofado <span className="text-machado-neon">Novo de Novo!</span>
-        </h1>
-        
-        <p className="hero-subtitle mb-12">
-          Higienização & Impermeabilização Profissional no Rio de Janeiro<br />
-          <span className="text-machado-neon font-bold">Tecnologia avançada, resultados garantidos!</span>
-        </p>
-
-        {/* Selos Flutuantes Profissionais */}
-        <div className="absolute -top-4 -left-4 glass-card px-4 py-2 text-sm animate-float bg-white/20 backdrop-blur-md border border-white/30">
-          <div className="flex items-center gap-2 text-white">
-            <Users size={16} />
-            <span className="font-bold">+500 Clientes</span>
-          </div>
-        </div>
-
-        <div className="absolute -top-4 -right-4 glass-card px-4 py-2 text-sm animate-float bg-machado-green/20 backdrop-blur-md border border-white/30" style={{ animationDelay: '1s' }}>
-          <div className="flex items-center gap-2 text-white">
-            <Shield size={16} />
-            <span className="font-bold">6 Meses Garantia</span>
-          </div>
-        </div>
-
-        <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 glass-card px-4 py-2 text-sm animate-float bg-machado-neon/20 backdrop-blur-md border border-white/30" style={{ animationDelay: '2s' }}>
-          <div className="flex items-center gap-2 text-white">
-            <Zap size={16} />
-            <span className="font-bold">Atendimento Imediato</span>
-          </div>
-        </div>
-
-        {/* CTA Principal Neon Ultra Melhorado */}
-        <div className="mb-12 relative">
-          <Button 
-            onClick={handleWhatsApp}
-            className="relative cta-neon animate-pulse-neon text-2xl px-16 py-8 mb-6 group overflow-hidden"
+    <>
+      <style>
+        {`
+          @keyframes appear {
+            0% { 
+              opacity: 0; 
+              transform: translateY(20px); 
+            }
+            100% { 
+              opacity: 1; 
+              transform: translateY(0); 
+            }
+          }
+          
+          @keyframes appear-zoom {
+            0% { 
+              opacity: 0; 
+              transform: scale(0.95); 
+            }
+            100% { 
+              opacity: 1; 
+              transform: scale(1); 
+            }
+          }
+          
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+          }
+          
+          @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(37, 99, 235, 0.5); }
+          }
+          
+          .animate-appear {
+            animation: appear 0.8s ease-out forwards;
+          }
+          
+          .animate-appear-zoom {
+            animation: appear-zoom 1s ease-out forwards;
+          }
+          
+          .animate-float {
+            animation: float 3s ease-in-out infinite;
+          }
+          
+          .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+          }
+        `}
+      </style>
+      
+      <section
+        ref={containerRef}
+        className={cn(
+          "relative bg-background text-foreground",
+          "py-12 px-4 md:py-24 lg:py-32",
+          "overflow-hidden min-h-screen",
+          className,
+        )}
+      >
+        {/* Grid Pattern Background */}
+        <div className="absolute inset-0 z-0">
+          <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 1200 800"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="xMidYMid slice"
           >
-            <MessageCircle className="mr-4 group-hover:rotate-12 transition-transform duration-300" size={32} />
-            <span className="relative z-10">Agendar Agora pelo WhatsApp</span>
+            <defs>
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="hsl(var(--foreground))" strokeOpacity="0.05" strokeWidth="1"/>
+              </pattern>
+              <radialGradient id="mouseGlow" cx="0" cy="0" r="1">
+                <stop offset="0%" stopColor="rgb(37, 99, 235)" stopOpacity="0.08" />
+                <stop offset="100%" stopColor="transparent" />
+              </radialGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+            <circle
+              cx={mousePosition.x}
+              cy={mousePosition.y}
+              r="150"
+              fill="url(#mouseGlow)"
+              className="pointer-events-none transition-opacity duration-300"
+            />
+          </svg>
+        </div>
+
+        <div className="relative mx-auto max-w-[1280px] flex flex-col gap-12 lg:gap-24">
+          <div className="relative z-10 flex flex-col items-center gap-8 pt-8 md:pt-16 text-center lg:gap-12">
             
-            {/* Efeito de brilho que passa */}
-            <div className="absolute inset-0 -top-2 -bottom-2 w-1/4 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 group-hover:animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          </Button>
-          
-          {/* Badge de urgência */}
-          <div className="absolute -top-4 -right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
-            🔥 Só hoje!
+            {/* Badge */}
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/30 text-sm font-medium text-blue-600 dark:text-blue-400 animate-appear opacity-0">
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Mais de 500 clientes satisfeitos
+            </div>
+
+            {/* Main Heading */}
+            <h1
+              className={cn(
+                "inline-block animate-appear opacity-0 [animation-delay:150ms]",
+                "bg-gradient-to-b from-foreground via-foreground/90 to-muted-foreground",
+                "bg-clip-text text-transparent",
+                "text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl",
+                "leading-[1.1] sm:leading-[1.1]",
+                "drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]",
+              )}
+            >
+              Seu Estofado
+              <br />
+              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-clip-text text-transparent">
+                Novo de Novo!
+              </span>
+            </h1>
+
+            {/* Description */}
+            <p
+              className={cn(
+                "max-w-[650px] animate-appear opacity-0 [animation-delay:300ms]",
+                "text-lg sm:text-xl md:text-2xl",
+                "text-muted-foreground",
+                "font-medium leading-relaxed",
+              )}
+            >
+              Higienização profissional com tecnologia avançada no Rio de Janeiro.
+              <br />
+              <strong className="text-blue-600 dark:text-blue-400">Garantia de 6 meses</strong> ou seu dinheiro de volta.
+            </p>
+
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl animate-appear opacity-0 [animation-delay:450ms]">
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 backdrop-blur-sm hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+                <Shield className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <span className="text-sm font-medium">Proteção Duradoura</span>
+              </div>
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 backdrop-blur-sm hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+                <Droplets className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <span className="text-sm font-medium">Impermeabilização Total</span>
+              </div>
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 backdrop-blur-sm hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+                <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <span className="text-sm font-medium">Tecnologia Avançada</span>
+              </div>
+            </div>
+
+            {/* CTAs */}
+            <div
+              className="relative z-10 flex flex-col sm:flex-row justify-center gap-4 w-full max-w-md
+              animate-appear opacity-0 [animation-delay:600ms]"
+            >
+              <Button
+                onClick={handleWhatsApp}
+                size="lg"
+                className={cn(
+                  "bg-blue-600 hover:bg-blue-700",
+                  "text-white shadow-lg animate-pulse-glow",
+                  "transition-all duration-300 group",
+                  "flex-1 sm:flex-none"
+                )}
+              >
+                <Phone className="w-4 h-4 mr-2" />
+                👉 Quero Meu Orçamento Agora
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+
+              <Button
+                onClick={handleScrollToCalculator}
+                size="lg"
+                variant="outline"
+                className={cn(
+                  "border-2 border-blue-300 dark:border-blue-700 hover:border-blue-500 dark:hover:border-blue-500",
+                  "text-foreground hover:text-blue-600 dark:hover:text-blue-400",
+                  "transition-all duration-300",
+                  "flex-1 sm:flex-none"
+                )}
+              >
+                🚀 Calcular Preço Exclusivo
+              </Button>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-sm text-muted-foreground animate-appear opacity-0 [animation-delay:750ms]">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                <span>Resposta em 5 minutos</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                <span>Agendamento imediato</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                <span>Sem compromisso</span>
+              </div>
+            </div>
+
+            {/* Visual/Image */}
+            <div className="relative w-full pt-12 px-4 sm:px-6 lg:px-8 animate-appear opacity-0 [animation-delay:900ms]">
+              <div
+                className={cn(
+                  "relative z-10 rounded-2xl overflow-hidden shadow-xl",
+                  "shadow-[0_0_50px_-12px_rgba(32,201,151,0.3)] dark:shadow-[0_0_50px_-12px_rgba(32,201,151,0.2)]",
+                  "border border-accent/10 dark:border-accent/5 animate-float",
+                  "max-w-4xl mx-auto"
+                )}
+              >
+                <img 
+                  src={heroImage} 
+                  alt="Sofá limpo e higienizado pela Machado Clean"
+                  className="w-full h-auto object-cover"
+                />
+                
+                {/* Badge de resultado sobreposta */}
+                <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg">
+                  <div className="text-sm text-muted-foreground">Resultado em</div>
+                  <div className="text-2xl font-bold text-accent">2 horas</div>
+                </div>
+
+                {/* Badge de garantia */}
+                <div className="absolute top-6 right-6 bg-accent/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg text-white">
+                  <div className="text-sm">Garantia</div>
+                  <div className="text-lg font-bold">6 meses</div>
+                </div>
+              </div>
+
+              {/* Elementos decorativos */}
+              <div className="absolute -top-6 -right-6 w-32 h-32 bg-primary/10 rounded-full -z-10"></div>
+              <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-accent/10 rounded-full -z-10"></div>
+            </div>
           </div>
         </div>
 
-        {/* Indicadores de Credibilidade Melhorados */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <div className="glass-card text-center group hover:scale-110 transition-all duration-500">
-            <div className="relative">
-              <Users className="w-16 h-16 mx-auto mb-4 text-white group-hover:text-machado-neon transition-colors duration-300" />
-              <div className="absolute -top-2 -right-2 bg-machado-neon text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold">
-                ✓
-              </div>
-            </div>
-            <div className="text-4xl font-black mb-2 text-white">+500</div>
-            <p className="text-sm opacity-90 font-medium">Clientes Transformados</p>
-            <div className="flex justify-center mt-2">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={16} className="text-yellow-400 fill-current" />
-              ))}
-            </div>
-          </div>
-          
-          <div className="glass-card text-center group hover:scale-110 transition-all duration-500">
-            <div className="relative">
-              <Award className="w-16 h-16 mx-auto mb-4 text-white group-hover:text-machado-green transition-colors duration-300" />
-              <div className="absolute -top-2 -right-2 bg-machado-green text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold">
-                ★
-              </div>
-            </div>
-            <div className="text-4xl font-black mb-2 text-white">6 meses</div>
-            <p className="text-sm opacity-90 font-medium">Garantia Premium</p>
-            <p className="text-xs text-machado-green mt-1 font-bold">100% Certificada</p>
-          </div>
-          
-          <div className="glass-card text-center group hover:scale-110 transition-all duration-500">
-            <div className="relative">
-              <Zap className="w-16 h-16 mx-auto mb-4 text-white group-hover:text-yellow-400 transition-colors duration-300" />
-              <div className="absolute -top-2 -right-2 bg-yellow-400 text-black rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold">
-                ⚡
-              </div>
-            </div>
-            <div className="text-4xl font-black mb-2 text-white">24h</div>
-            <p className="text-sm opacity-90 font-medium">Resposta Garantida</p>
-            <div className="flex items-center justify-center gap-1 mt-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-xs text-green-400">Online Agora</span>
-            </div>
-          </div>
+        {/* Background Glow Effects */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-accent/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute top-3/4 left-3/4 w-48 h-48 bg-accent/5 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '4s' }}></div>
         </div>
-      </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-float">
-        <div className="w-8 h-12 border-2 border-white/60 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-float">
+          <div className="w-8 h-12 border-2 border-muted-foreground/30 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-accent rounded-full mt-2 animate-pulse"></div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
-};
-
-export default HeroSectionModern;
+}
