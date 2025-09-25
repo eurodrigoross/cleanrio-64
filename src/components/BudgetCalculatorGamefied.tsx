@@ -457,7 +457,7 @@ const BudgetCalculatorGamefied = () => {
       <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden text-center" data-section="budget-calculator">
         {/* Background moderno */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/20 to-background"></div>
+          <div className="absolute inset-0 bg-background"></div>
           <svg
             width="100%"
             height="100%"
@@ -476,15 +476,12 @@ const BudgetCalculatorGamefied = () => {
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="w-16 h-16 mx-auto mb-8 rounded-2xl bg-gradient-to-br from-accent to-primary flex items-center justify-center animate-float">
-            <Sparkles className="text-white" size={32} />
+          <div className="w-16 h-16 mx-auto mb-8 rounded-2xl bg-primary/10 flex items-center justify-center">
+            <Calculator className="text-primary" size={32} />
           </div>
           
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
-            Simulador de{" "}
-            <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
-              Orçamento Inteligente
-            </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-foreground">
+            Simulador de Orçamento Inteligente
           </h2>
           
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12">
@@ -496,10 +493,10 @@ const BudgetCalculatorGamefied = () => {
               <DialogTrigger asChild>
                 <Button 
                   size="lg"
-                  className="bg-gradient-to-r from-accent to-primary hover:from-accent/90 hover:to-primary/90 text-white text-xl px-12 py-6 shadow-lg shadow-accent/25 transition-all duration-300 group rounded-2xl"
+                  className="bg-primary hover:bg-primary/90 text-white text-xl px-12 py-6 shadow-lg transition-all duration-300 group rounded-2xl"
                 >
                   <Calculator className="mr-4 group-hover:rotate-12 transition-transform duration-300" size={28} />
-                  <span className="relative z-10">🚀 Calcular Preço Exclusivo</span>
+                  <span className="relative z-10">Calcular Preço Exclusivo</span>
                 </Button>
               </DialogTrigger>
               
@@ -551,8 +548,8 @@ const BudgetCalculatorGamefied = () => {
                   {currentStep === 0 && (
                     <div className="max-w-md mx-auto">
                       <div className="text-center mb-8">
-                        <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                          <User size={40} className="text-white" />
+                        <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                          <User size={40} className="text-primary" />
                         </div>
                         <h4 className="text-2xl font-bold text-gray-900 mb-3">Vamos começar!</h4>
                         <p className="text-gray-600">Para calcular seu orçamento personalizado, precisamos de algumas informações básicas.</p>
@@ -571,7 +568,7 @@ const BudgetCalculatorGamefied = () => {
                               placeholder="Digite seu nome completo"
                               value={customerName}
                               onChange={(e) => setCustomerName(e.target.value)}
-                              className="pl-10 h-12 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                              className="pl-10 h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
                             />
                           </div>
                         </div>
@@ -588,7 +585,7 @@ const BudgetCalculatorGamefied = () => {
                               placeholder="(21) 99999-9999"
                               value={customerPhone}
                               onChange={(e) => setCustomerPhone(e.target.value)}
-                              className="pl-10 h-12 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                              className="pl-10 h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
                             />
                           </div>
                         </div>
@@ -596,9 +593,9 @@ const BudgetCalculatorGamefied = () => {
                         <Button
                           onClick={handleDataFormSubmit}
                           disabled={!customerName.trim() || !customerPhone.trim()}
-                          className="w-full bg-green-600 hover:bg-green-700 text-white h-12 text-lg font-semibold rounded-xl transition-all duration-200 disabled:bg-gray-300 disabled:text-gray-500"
+                          className="w-full bg-primary hover:bg-primary/90 text-white h-12 text-lg font-semibold rounded-xl transition-all duration-200 disabled:bg-gray-300 disabled:text-gray-500"
                         >
-                          <Sparkles className="mr-2" size={20} />
+                          <Calculator className="mr-2" size={20} />
                           Continuar para Orçamento
                         </Button>
 
@@ -766,7 +763,7 @@ const BudgetCalculatorGamefied = () => {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* Calendário */}
                         <div className="card-minimal p-6">
-                          <h5 className="text-lg font-bold text-foreground mb-4">📅 Selecione a data</h5>
+                          <h5 className="text-lg font-bold text-foreground mb-4">Selecione a data</h5>
                           <Calendar
                             mode="single"
                             selected={selectedDate}
@@ -796,9 +793,9 @@ const BudgetCalculatorGamefied = () => {
 
                       {selectedDate && selectedTimeSlot && (
                         <div className="mt-8">
-                          <div className="card-minimal p-4 mb-6 bg-green-50 border-green-200">
-                            <div className="text-green-800 font-medium">
-                              ✅ Agendamento selecionado: {format(selectedDate, "dd/MM/yyyy")} às {selectedTimeSlot}
+                          <div className="card-minimal p-4 mb-6 bg-primary/5 border-primary/20">
+                            <div className="text-primary font-medium">
+                              Agendamento selecionado: {format(selectedDate, "dd/MM/yyyy")} às {selectedTimeSlot}
                             </div>
                           </div>
                           
@@ -959,7 +956,7 @@ const BudgetCalculatorGamefied = () => {
                               paymentMethod === "pix" ? "border-2 border-accent bg-accent/5" : "hover:border-accent"
                             }`}
                           >
-                            <div className="text-lg font-bold text-accent mb-2">💰 PIX / Dinheiro</div>
+                            <div className="text-lg font-bold text-accent mb-2">PIX / Dinheiro</div>
                             <div className="text-3xl font-black text-foreground">R$ {calculatePrices().cashPrice}</div>
                             <div className="text-sm text-muted-foreground mt-2">Melhor preço garantido</div>
                           </div>
@@ -1048,11 +1045,11 @@ const BudgetCalculatorGamefied = () => {
 
                       <div className="card-minimal p-6 mb-8 bg-blue-50 border-blue-200">
                         <div className="text-blue-800">
-                          <div className="font-bold mb-2">📋 Resumo Final:</div>
+                          <div className="font-bold mb-2">Resumo Final:</div>
                           <div className="text-sm space-y-1">
-                            <div>🛋️ {selectedService?.name} - {selectedSize?.name}</div>
-                            <div>📅 {selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""} às {selectedTimeSlot}</div>
-                            <div>💰 {paymentMethod === "pix" ? "PIX" : "Cartão"} - R$ {paymentMethod === "pix" ? calculatePrices().cashPrice : calculatePrices().installmentPrice}</div>
+                            <div>{selectedService?.name} - {selectedSize?.name}</div>
+                            <div>{selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""} às {selectedTimeSlot}</div>
+                            <div>{paymentMethod === "pix" ? "PIX" : "Cartão"} - R$ {paymentMethod === "pix" ? calculatePrices().cashPrice : calculatePrices().installmentPrice}</div>
                           </div>
                         </div>
                       </div>
@@ -1078,29 +1075,29 @@ const BudgetCalculatorGamefied = () => {
                   {isConfirmed && (
                     <div className="text-center max-w-2xl mx-auto">
                       <div className="mb-8">
-                        <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+                        <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
                           <CheckCircle size={50} className="text-white" />
                         </div>
-                        <h4 className="text-3xl font-bold text-green-600 mb-4">Agendamento Confirmado!</h4>
+                        <h4 className="text-3xl font-bold text-primary mb-4">Agendamento Confirmado!</h4>
                         <p className="text-muted-foreground text-lg">
                           Obrigado, {customerName}! Recebemos seu agendamento com sucesso.
                         </p>
                       </div>
 
-                      <div className="card-minimal p-6 mb-8 bg-green-50 border-green-200">
-                        <div className="text-green-800">
-                          <div className="font-bold text-lg mb-4">🎉 Próximos passos:</div>
+                      <div className="card-minimal p-6 mb-8 bg-primary/5 border-primary/20">
+                        <div className="text-primary">
+                          <div className="font-bold text-lg mb-4">Próximos passos:</div>
                           <div className="text-left space-y-3">
                             <div className="flex items-center gap-3">
-                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
+                              <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
                               <span>Um de nossos atendentes entrará em contato em breve</span>
                             </div>
                             <div className="flex items-center gap-3">
-                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">2</div>
+                              <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">2</div>
                               <span>Confirmaremos todos os detalhes do seu agendamento</span>
                             </div>
                             <div className="flex items-center gap-3">
-                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
+                              <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
                               <span>Nossa equipe chegará no horário combinado</span>
                             </div>
                           </div>
