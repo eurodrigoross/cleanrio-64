@@ -2,28 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Star, Phone, Crown, Zap, Shield, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
-
 const PricingTableModern = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+      }
+    }, {
+      threshold: 0.1
+    });
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-
     return () => observer.disconnect();
   }, []);
-
   const handleWhatsApp = (plan: string) => {
     const message = `Olá! Tenho interesse no plano ${plan}. Gostaria de agendar um orçamento!`;
     const phone = "5521991612893";
@@ -31,65 +25,38 @@ const PricingTableModern = () => {
     const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
   };
-
-  const plans = [
-    {
-      name: "Essencial",
-      description: "Ideal para higienização básica",
-      price: "A partir de R$ 89",
-      features: [
-        "Higienização profunda",
-        "Aspiração potente", 
-        "Produtos atóxicos",
-        "Secagem rápida",
-        "Garantia de 3 meses"
-      ],
-      cta: "Quero Meu Orçamento",
-      popular: false,
-      gradient: "from-blue-600 to-blue-500",
-      bgGradient: "from-white to-gray-50 dark:from-gray-900 dark:to-gray-800",
-      icon: Zap
-    },
-    {
-      name: "Completo",
-      description: "Mais escolhido pelos clientes",
-      price: "A partir de R$ 149",
-      features: [
-        "Tudo do plano Essencial",
-        "Impermeabilização premium",
-        "Anti-ácaros e anti-bactérias", 
-        "Proteção contra manchas",
-        "Garantia de 6 meses",
-        "Desconto no retorno"
-      ],
-      cta: "Calcular Preço Exclusivo",
-      popular: true,
-      gradient: "from-blue-600 to-blue-500",
-      bgGradient: "from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/30",
-      icon: Shield
-    },
-    {
-      name: "Premium",
-      description: "Máxima proteção e durabilidade",
-      price: "A partir de R$ 199", 
-      features: [
-        "Tudo do plano Completo",
-        "Tratamento nano-tecnológico",
-        "Proteção UV avançada",
-        "Atendimento prioritário",
-        "Garantia de 12 meses",
-        "Manutenção gratuita"
-      ],
-      cta: "Quero Meu Orçamento",
-      popular: false,
-      gradient: "from-blue-600 to-blue-500",
-      bgGradient: "from-white to-gray-50 dark:from-gray-900 dark:to-gray-800",
-      icon: Crown
-    }
-  ];
-
-  return (
-    <>
+  const plans = [{
+    name: "Essencial",
+    description: "Ideal para higienização básica",
+    price: "A partir de R$ 89",
+    features: ["Higienização profunda", "Aspiração potente", "Produtos atóxicos", "Secagem rápida", "Garantia de 3 meses"],
+    cta: "Quero Meu Orçamento",
+    popular: false,
+    gradient: "from-blue-600 to-blue-500",
+    bgGradient: "from-white to-gray-50 dark:from-gray-900 dark:to-gray-800",
+    icon: Zap
+  }, {
+    name: "Completo",
+    description: "Mais escolhido pelos clientes",
+    price: "A partir de R$ 149",
+    features: ["Tudo do plano Essencial", "Impermeabilização premium", "Anti-ácaros e anti-bactérias", "Proteção contra manchas", "Garantia de 6 meses", "Desconto no retorno"],
+    cta: "Calcular Preço Exclusivo",
+    popular: true,
+    gradient: "from-blue-600 to-blue-500",
+    bgGradient: "from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/30",
+    icon: Shield
+  }, {
+    name: "Premium",
+    description: "Máxima proteção e durabilidade",
+    price: "A partir de R$ 199",
+    features: ["Tudo do plano Completo", "Tratamento nano-tecnológico", "Proteção UV avançada", "Atendimento prioritário", "Garantia de 12 meses", "Manutenção gratuita"],
+    cta: "Quero Meu Orçamento",
+    popular: false,
+    gradient: "from-blue-600 to-blue-500",
+    bgGradient: "from-white to-gray-50 dark:from-gray-900 dark:to-gray-800",
+    icon: Crown
+  }];
+  return <>
       <style>
         {`
           @keyframes slideInUp {
@@ -150,16 +117,13 @@ const PricingTableModern = () => {
         `}
       </style>
 
-      <section 
-        ref={sectionRef}
-        className="relative py-16 md:py-24 lg:py-32 bg-background"
-      >
+      <section ref={sectionRef} className="relative py-16 md:py-24 lg:py-32 bg-background">
         {/* Simple Background Pattern */}
         <div className="absolute inset-0 z-0 opacity-5">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <pattern id="pricingGrid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1"/>
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#pricingGrid)" />
@@ -182,46 +146,26 @@ const PricingTableModern = () => {
 
           {/* Pricing Cards */}
           <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
-            {plans.map((plan, index) => (
-              <div 
-                key={index}
-                className={cn(
-                  "group relative overflow-hidden rounded-3xl border backdrop-blur-sm",
-                  "bg-background/50 hover:bg-background/80",
-                  "transition-all duration-500 opacity-0",
-                  "hover:scale-105 hover:-translate-y-2",
-                  plan.popular 
-                    ? "border-2 border-green-500/30 shadow-2xl shadow-green-500/10" 
-                    : "border-border/50 hover:border-primary/30",
-                  isVisible && "animate-scale-in"
-                )}
-                style={{ animationDelay: `${400 + index * 200}ms` }}
-              >
+            {plans.map((plan, index) => <div key={index} className={cn("group relative overflow-hidden rounded-3xl border backdrop-blur-sm", "bg-background/50 hover:bg-background/80", "transition-all duration-500 opacity-0", "hover:scale-105 hover:-translate-y-2", plan.popular ? "border-2 border-green-500/30 shadow-2xl shadow-green-500/10" : "border-border/50 hover:border-primary/30", isVisible && "animate-scale-in")} style={{
+            animationDelay: `${400 + index * 200}ms`
+          }}>
                 {/* Shimmer Effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer"></div>
 
                 {/* Popular Badge */}
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                {plan.popular && <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
                     <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-2 rounded-full text-sm font-semibold flex items-center gap-2 shadow-lg animate-bounce-subtle">
                       <Star size={16} />
                       Mais Popular
                     </div>
-                  </div>
-                )}
+                  </div>}
 
                 {/* Glow Effect */}
-                <div className={cn(
-                  "absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-                  `bg-gradient-to-br ${plan.gradient} blur-2xl -z-10`
-                )}></div>
+                <div className={cn("absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500", `bg-gradient-to-br ${plan.gradient} blur-2xl -z-10`)}></div>
 
                 <div className="relative p-8">
                   {/* Icon */}
-                  <div className={cn(
-                    "w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center",
-                    `bg-gradient-to-br ${plan.gradient} group-hover:scale-110 transition-transform duration-300`
-                  )}>
+                  <div className={cn("w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center", `bg-gradient-to-br ${plan.gradient} group-hover:scale-110 transition-transform duration-300`)}>
                     <plan.icon className="text-white" size={32} />
                   </div>
 
@@ -233,63 +177,37 @@ const PricingTableModern = () => {
                     <p className="text-muted-foreground mb-6 group-hover:text-foreground/80 transition-colors duration-300">
                       {plan.description}
                     </p>
-                    <div className={cn(
-                      "text-3xl md:text-4xl font-bold bg-gradient-to-r bg-clip-text text-transparent",
-                      `${plan.gradient.replace('to-', 'to-')} group-hover:scale-110 transition-transform duration-300 inline-block`
-                    )}>
+                    <div className={cn("text-3xl md:text-4xl font-bold bg-gradient-to-r bg-clip-text text-transparent", `${plan.gradient.replace('to-', 'to-')} group-hover:scale-110 transition-transform duration-300 inline-block`)}>
                       {plan.price}
                     </div>
                   </div>
 
                   {/* Features */}
                   <ul className="space-y-4 mb-8">
-                    {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start gap-3 group/item">
-                        <div className={cn(
-                          "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5",
-                          `bg-gradient-to-br ${plan.gradient} group-hover/item:scale-110 transition-transform duration-300`
-                        )}>
+                    {plan.features.map((feature, featureIndex) => <li key={featureIndex} className="flex items-start gap-3 group/item">
+                        <div className={cn("w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5", `bg-gradient-to-br ${plan.gradient} group-hover/item:scale-110 transition-transform duration-300`)}>
                           <CheckCircle size={14} className="text-white" />
                         </div>
                         <span className="text-muted-foreground group-hover:text-foreground/90 transition-colors duration-300">
                           {feature}
                         </span>
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
 
                   {/* CTA Button */}
-                  <Button 
-                    onClick={() => handleWhatsApp(plan.name)}
-                    size="lg"
-                    className={cn(
-                      "w-full transition-all duration-300 group/button",
-                      plan.popular 
-                        ? `bg-gradient-to-r ${plan.gradient} hover:shadow-lg hover:shadow-green-500/25 text-white`
-                        : "border-2 border-primary/30 hover:border-primary/50 hover:bg-primary/5"
-                    )}
-                  >
+                  <Button onClick={() => handleWhatsApp(plan.name)} size="lg" className={cn("w-full transition-all duration-300 group/button", plan.popular ? `bg-gradient-to-r ${plan.gradient} hover:shadow-lg hover:shadow-green-500/25 text-white` : "border-2 border-primary/30 hover:border-primary/50 hover:bg-primary/5")}>
                     <Phone size={20} className="mr-2 group-hover/button:rotate-12 transition-transform duration-300" />
                     {plan.cta}
                   </Button>
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
 
           {/* Additional Info */}
           <div className="max-w-5xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 mb-16">
-              <div 
-                className={cn(
-                  "relative p-8 rounded-2xl border border-border/50 bg-background/50 backdrop-blur-sm opacity-0",
-                  "hover:border-blue-500/30 transition-all duration-500",
-                  isVisible && "animate-scale-in [animation-delay:1000ms]"
-                )}
-              >
-                <div className="w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
-                  <span className="text-2xl">💰</span>
-                </div>
+              <div className={cn("relative p-8 rounded-2xl border border-border/50 bg-background/50 backdrop-blur-sm opacity-0", "hover:border-blue-500/30 transition-all duration-500", isVisible && "animate-scale-in [animation-delay:1000ms]")}>
+                
                 <h3 className="text-xl font-bold mb-4 text-foreground">
                   Formas de Pagamento
                 </h3>
@@ -313,16 +231,8 @@ const PricingTableModern = () => {
                 </ul>
               </div>
 
-              <div 
-                className={cn(
-                  "relative p-8 rounded-2xl border border-border/50 bg-background/50 backdrop-blur-sm opacity-0",
-                  "hover:border-green-500/30 transition-all duration-500",
-                  isVisible && "animate-scale-in [animation-delay:1200ms]"
-                )}
-              >
-                <div className="w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-                  <span className="text-2xl">📍</span>
-                </div>
+              <div className={cn("relative p-8 rounded-2xl border border-border/50 bg-background/50 backdrop-blur-sm opacity-0", "hover:border-green-500/30 transition-all duration-500", isVisible && "animate-scale-in [animation-delay:1200ms]")}>
+                
                 <h3 className="text-xl font-bold mb-4 text-foreground">
                   Atendemos Todo o Rio
                 </h3>
@@ -348,13 +258,7 @@ const PricingTableModern = () => {
             </div>
 
             {/* Price Guarantee */}
-            <div 
-              className={cn(
-                "relative p-8 md:p-12 text-center rounded-3xl border-2 border-accent/20 opacity-0",
-                "bg-gradient-to-br from-accent/5 via-background/50 to-primary/5 backdrop-blur-sm",
-                isVisible && "animate-scale-in [animation-delay:1400ms]"
-              )}
-            >
+            <div className={cn("relative p-8 md:p-12 text-center rounded-3xl border-2 border-accent/20 opacity-0", "bg-gradient-to-br from-accent/5 via-background/50 to-primary/5 backdrop-blur-sm", isVisible && "animate-scale-in [animation-delay:1400ms]")}>
               {/* Background Glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-accent/10 via-transparent to-primary/10 rounded-3xl blur-2xl"></div>
               
@@ -393,8 +297,6 @@ const PricingTableModern = () => {
           </div>
         </div>
       </section>
-    </>
-  );
+    </>;
 };
-
 export default PricingTableModern;
