@@ -1,109 +1,88 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Star, Quote, CheckCircle, Users, MapPin, Shield, TrendingUp, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
-
 const SocialProofModern = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-
-  const testimonials = [
-  {
+  const testimonials = [{
     name: "Maria Silva",
-      location: "Barra da Tijuca",
-      text: "Incrível! Meu sofá ficou como novo. O cheiro ruim que tinha há meses desapareceu completamente. Super recomendo a Machado Clean!",
-      rating: 5,
-      service: "Higienização de Sofá",
-      gradient: "from-blue-600 to-blue-500"
-    },
-    {
-      name: "Carlos Santos",
-    location: "Copacabana",
-      text: "Profissionais muito competentes. Chegaram no horário, fizeram um trabalho impecável no meu colchão. Valeu cada centavo!",
+    location: "Barra da Tijuca",
+    text: "Incrível! Meu sofá ficou como novo. O cheiro ruim que tinha há meses desapareceu completamente. Super recomendo a Machado Clean!",
     rating: 5,
-      service: "Higienização de Colchão",
-      gradient: "from-blue-600 to-blue-500"
-  },
-  {
-      name: "Ana Rodriguez",
-      location: "Tijuca",
-      text: "Serviço de qualidade excepcional. Meu estofado do carro ficou perfeito, sem manchas e com cheiro fresquinho. Muito satisfeita!",
+    service: "Higienização de Sofá",
+    gradient: "from-blue-600 to-blue-500"
+  }, {
+    name: "Carlos Santos",
+    location: "Copacabana",
+    text: "Profissionais muito competentes. Chegaram no horário, fizeram um trabalho impecável no meu colchão. Valeu cada centavo!",
+    rating: 5,
+    service: "Higienização de Colchão",
+    gradient: "from-blue-600 to-blue-500"
+  }, {
+    name: "Ana Rodriguez",
+    location: "Tijuca",
+    text: "Serviço de qualidade excepcional. Meu estofado do carro ficou perfeito, sem manchas e com cheiro fresquinho. Muito satisfeita!",
     rating: 5,
     service: "Higienização Automotiva",
-      gradient: "from-blue-600 to-blue-500"
-  },
-  {
-      name: "Roberto Oliveira",
-      location: "Méier",
-      text: "A garantia de 6 meses me deu confiança para contratar. O resultado superou minhas expectativas. Empresa séria e profissional.",
+    gradient: "from-blue-600 to-blue-500"
+  }, {
+    name: "Roberto Oliveira",
+    location: "Méier",
+    text: "A garantia de 6 meses me deu confiança para contratar. O resultado superou minhas expectativas. Empresa séria e profissional.",
     rating: 5,
-      service: "Impermeabilização",
-      gradient: "from-blue-600 to-blue-500"
-    }
-  ];
-
-  const trustBadges = [
-    {
-      icon: Users,
-      value: "500+",
-      label: "Clientes Atendidos",
-      color: "text-blue-600 dark:text-blue-400",
-      bgColor: "bg-blue-50 dark:bg-blue-900/20",
-      borderColor: "border-blue-200 dark:border-blue-800/30"
-    },
-    {
-      icon: Star,
-      value: "4.9",
-      label: "Avaliação Google",
-      color: "text-blue-600 dark:text-blue-400",
-      bgColor: "bg-blue-50 dark:bg-blue-900/20",
-      borderColor: "border-blue-200 dark:border-blue-800/30"
-    },
-    {
-      icon: CheckCircle,
-      value: "98%",
-      label: "Satisfação",
-      color: "text-blue-600 dark:text-blue-400",
-      bgColor: "bg-blue-50 dark:bg-blue-900/20",
-      borderColor: "border-blue-200 dark:border-blue-800/30"
-    },
-    {
-      icon: TrendingUp,
-      value: "6",
-      label: "Anos de Experiência",
-      color: "text-blue-600 dark:text-blue-400",
-      bgColor: "bg-blue-50 dark:bg-blue-900/20",
-      borderColor: "border-blue-200 dark:border-blue-800/30"
-    }
-  ];
-
+    service: "Impermeabilização",
+    gradient: "from-blue-600 to-blue-500"
+  }];
+  const trustBadges = [{
+    icon: Users,
+    value: "500+",
+    label: "Clientes Atendidos",
+    color: "text-blue-600 dark:text-blue-400",
+    bgColor: "bg-blue-50 dark:bg-blue-900/20",
+    borderColor: "border-blue-200 dark:border-blue-800/30"
+  }, {
+    icon: Star,
+    value: "4.9",
+    label: "Avaliação Google",
+    color: "text-blue-600 dark:text-blue-400",
+    bgColor: "bg-blue-50 dark:bg-blue-900/20",
+    borderColor: "border-blue-200 dark:border-blue-800/30"
+  }, {
+    icon: CheckCircle,
+    value: "98%",
+    label: "Satisfação",
+    color: "text-blue-600 dark:text-blue-400",
+    bgColor: "bg-blue-50 dark:bg-blue-900/20",
+    borderColor: "border-blue-200 dark:border-blue-800/30"
+  }, {
+    icon: TrendingUp,
+    value: "6",
+    label: "Anos de Experiência",
+    color: "text-blue-600 dark:text-blue-400",
+    bgColor: "bg-blue-50 dark:bg-blue-900/20",
+    borderColor: "border-blue-200 dark:border-blue-800/30"
+  }];
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+      setCurrentIndex(prev => (prev + 1) % testimonials.length);
     }, 5000);
-
     return () => clearInterval(interval);
   }, [testimonials.length]);
-
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+      }
+    }, {
+      threshold: 0.1
+    });
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-
     return () => observer.disconnect();
   }, []);
-
-  return (
-    <>
+  return <>
       <style>
         {`
           @keyframes slideInUp {
@@ -164,16 +143,13 @@ const SocialProofModern = () => {
         `}
       </style>
 
-      <section 
-        ref={sectionRef}
-        className="relative py-16 md:py-24 lg:py-32 bg-background"
-      >
+      <section ref={sectionRef} className="relative py-16 md:py-24 lg:py-32 bg-background">
         {/* Simple Background Pattern */}
         <div className="absolute inset-0 z-0 opacity-5">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <pattern id="socialGrid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1"/>
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#socialGrid)" />
@@ -196,11 +172,7 @@ const SocialProofModern = () => {
 
           {/* Trust Badges - same style as hero features */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {trustBadges.map((badge, index) => (
-              <div 
-                key={index}
-                className="p-6 rounded-lg bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 backdrop-blur-sm hover:border-blue-300 dark:hover:border-blue-700 transition-colors"
-              >
+            {trustBadges.map((badge, index) => <div key={index} className="p-6 rounded-lg bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 backdrop-blur-sm hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
                 <div className="text-center">
                   <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
                     <badge.icon className={cn("w-6 h-6", badge.color)} />
@@ -214,8 +186,7 @@ const SocialProofModern = () => {
                     {badge.label}
                   </p>
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
 
           {/* Testimonials Carousel - simplified */}
@@ -256,9 +227,7 @@ const SocialProofModern = () => {
                     {/* Rating & Service */}
                     <div className="text-right">
                       <div className="flex mb-2 justify-end">
-                        {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                          <Star key={i} size={18} className="text-yellow-400 fill-current" />
-                        ))}
+                        {[...Array(testimonials[currentIndex].rating)].map((_, i) => <Star key={i} size={18} className="text-yellow-400 fill-current" />)}
                       </div>
                       <div className="text-sm text-muted-foreground">
                         {testimonials[currentIndex].service}
@@ -271,37 +240,19 @@ const SocialProofModern = () => {
 
             {/* Indicators */}
             <div className="flex justify-center gap-3 mt-8">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={cn(
-                    "w-3 h-3 rounded-full transition-all duration-300",
-                    currentIndex === index 
-                      ? "bg-blue-600 w-8" 
-                      : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                  )}
-                />
-              ))}
+              {testimonials.map((_, index) => <button key={index} onClick={() => setCurrentIndex(index)} className={cn("w-3 h-3 rounded-full transition-all duration-300", currentIndex === index ? "bg-blue-600 w-8" : "bg-muted-foreground/30 hover:bg-muted-foreground/50")} />)}
             </div>
           </div>
 
           {/* Guarantee Section */}
-          <div 
-            className={cn(
-              "max-w-3xl mx-auto text-center opacity-0",
-              isVisible && "animate-scale-in [animation-delay:900ms]"
-            )}
-          >
+          <div className={cn("max-w-3xl mx-auto text-center opacity-0", isVisible && "animate-scale-in [animation-delay:900ms]")}>
             <div className="relative p-8 md:p-12 rounded-3xl border border-border/50 bg-gradient-to-br from-accent/5 via-background/50 to-primary/5 backdrop-blur-sm">
               {/* Background Glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-accent/10 via-transparent to-primary/10 rounded-3xl blur-2xl"></div>
 
               <div className="relative z-10">
                 {/* Icon */}
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-accent to-primary flex items-center justify-center">
-                  <Shield className="text-white" size={40} />
-        </div>
+                
 
                 <h3 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
                   Satisfação Garantida
@@ -328,8 +279,6 @@ const SocialProofModern = () => {
         </div>
       </div>
     </section>
-    </>
-  );
+    </>;
 };
-
 export default SocialProofModern;
